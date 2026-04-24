@@ -166,6 +166,7 @@ Game Folder/
 - This project uses the native BASS C/C++ API and requires `bass.dll` at runtime.
 - `bass.dll` can be obtained from the official BASS website: https://www.un4seen.com/
 - BASS is a third-party library and should be used or redistributed according to the applicable BASS license terms.
+- ECM-R is distributed as a non-commercial fork project. If your usage, redistribution, or packaging of BASS goes beyond non-commercial use, review the official BASS licensing terms before shipping it.
 - The mod writes a crash dump file on unhandled exceptions.
 - This repository includes third-party dependencies and keeps the original MIT license notice.
 - The fork branding is ECM-R, but the runtime filenames currently remain `ecm.x86.asi` and `ecm.x86.ini` for compatibility.
