@@ -78,7 +78,10 @@ The build produces the DLL and also creates an `.asi` copy during post-build.
 The final runtime package should include at least:
 
 - `ecm.x86.asi`
-- `bass.dll`
+
+`bass.dll` is also required at runtime. If you do not bundle it with your release package, users can obtain it from the official BASS website:
+
+- https://www.un4seen.com/
 
 ## 5. Optional command-line build
 
@@ -94,7 +97,7 @@ Copy the runtime files into the location used by your ASI loader or mod manager.
 For a typical setup, this means placing:
 
 - `ecm.x86.asi`
-- `bass.dll`
+- `bass.dll` (if bundled separately or obtained from the official BASS website)
 
 next to the game executable or inside the mod loader's expected scripts directory.
 
@@ -131,3 +134,4 @@ Build and deploy `Release | Win-x86` unless you are targeting a different loader
 
 ECM-R is a fork of the original ECM project by **BttrDrgn**.
 The repository branding has been updated to ECM-R, but the runtime filenames currently remain `ecm.x86.asi` and `ecm.x86.ini` for compatibility.
+BASS is a third-party dependency and should be obtained, used, or redistributed according to the applicable BASS license terms.
