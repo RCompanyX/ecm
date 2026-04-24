@@ -150,7 +150,7 @@ workspace "ECM-R"
 			postbuildcommands {
 				"IF NOT EXIST \"$(OutDir)\"x86 mkdir \"$(OutDir)x86\\",
 				"copy /y \"$(OutDir)x86\\ecm.x86.dll\" \"$(OutDir)x86\\ecm.x86.asi\"",
-				"IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
+               "IF EXIST \"..\\deps\\bass\\Win32\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
 			}
 
        filter "platforms:Win-x64"
@@ -158,9 +158,9 @@ workspace "ECM-R"
 				"IF NOT EXIST \"$(OutDir)\"x86 mkdir \"$(OutDir)x86\\",
 				"IF NOT EXIST \"$(OutDir)\"x86_64 mkdir \"$(OutDir)x86_64\\",
 				"copy /y \"$(OutDir)x86\\ecm.x86.dll\" \"$(OutDir)x86\\ecm.x86.asi\"",
-				"IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
+               "IF EXIST \"..\\deps\\bass\\Win32\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
 				"copy /y \"$(OutDir)x86_64\\ecm.x86_64.dll\" \"$(OutDir)x86_64\\ecm.x86_64.asi\"",
-				"IF NOT EXIST \"$(OutDir)\"x86_64\\bass.dll copy /y \"..\\deps\\bass\\Win32\\x64\\bass.dll\" \"$(OutDir)\"\\x86_64\\",
+              "IF EXIST \"..\\deps\\bass\\Win32\\x64\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86_64\\bass.dll copy /y \"..\\deps\\bass\\Win32\\x64\\bass.dll\" \"$(OutDir)\"\\x86_64\\",
 			}
 
 		filter {}

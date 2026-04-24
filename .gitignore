@@ -52,6 +52,10 @@ deps/kiero/
 deps/ini_rw/
 deps/freetype-2.12.1/build/
 deps/freetype-2.12.1/out/
+deps/bass/Win32/bass.chm
+deps/bass/Win32/bass.dll
+deps/bass/Win32/x64/bass.dll
+deps/bass/**/.vs/
 
 # Music and user data
 Music/
