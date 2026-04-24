@@ -1,8 +1,8 @@
-# Building ECM
+# Building ECM-R
 
 ## Overview
 
-This repository does **not** build the game plugin through CMake.
+This repository does **not** build the ECM-R game plugin through CMake.
 The `.asi` module is generated from a Premake script located at `lua/windows.lua`, and project files are created with `generate.bat`.
 
 For **Need for Speed: Underground 2**, the relevant target is the **32-bit** build.
@@ -52,11 +52,11 @@ From the repository root, run:
 This does two things:
 
 1. Updates the required submodules.
-2. Generates `build/ECM.sln` using `tools/premake5.exe` and `lua/windows.lua`.
+2. Generates `build/ECM-R.sln` using `tools/premake5.exe` and `lua/windows.lua`.
 
 ## 3. Build the plugin in Visual Studio
 
-1. Open `build/ECM.sln`.
+1. Open `build/ECM-R.sln`.
 2. Select the solution configuration:
    - `Release`
 3. Select the solution platform:
@@ -85,7 +85,7 @@ The final runtime package should include at least:
 After generating the solution, the 32-bit release target can also be built with MSBuild:
 
 ```powershell
-msbuild build\ECM.sln /t:Overlay /p:Configuration=Release /p:Platform=Win-x86 /m
+msbuild build\ECM-R.sln /t:Overlay /p:Configuration=Release /p:Platform=Win-x86 /m
 ```
 
 ## 6. Install into the game
@@ -126,3 +126,8 @@ git submodule update --init --recursive
 
 `Need for Speed: Underground 2` uses the 32-bit plugin.
 Build and deploy `Release | Win-x86` unless you are targeting a different loader or a separate 64-bit environment.
+
+## Branding note
+
+ECM-R is a fork of the original ECM project.
+The repository branding has been updated to ECM-R, but the runtime filenames currently remain `ecm.x86.asi` and `ecm.x86.ini` for compatibility.

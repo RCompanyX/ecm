@@ -1,11 +1,11 @@
-<h1 align="center">ECM</h1>
-<p align="center"><b>Fork Notice:</b> This repository is a fork of another project. Keep the original license notice and review the upstream project for attribution, licensing, and development history.</p>
-<h2 align="center">External Custom Music</h2>
+<h1 align="center">ECM-R</h1>
+<p align="center"><b>Fork Notice:</b> ECM-R is a fork of the original ECM (External Custom Music) project. Keep the original license notice and review the upstream project for attribution, licensing, and development history.</p>
+<h2 align="center">External Custom Music Reloaded</h2>
 <p align="center">A mod for Need for Speed: Underground 2 that plays custom music without overwriting the game's original files.</p>
 
 ## Overview
 
-ECM replaces or mutes the in-game music and plays audio files from a user playlist folder.
+ECM-R replaces or mutes the in-game music and plays audio files from a user playlist folder.
 It also includes an in-game overlay for basic playback control.
 
 Current behavior in this fork is focused on **NFSU2**.
@@ -13,7 +13,7 @@ Current behavior in this fork is focused on **NFSU2**.
 ## Fork Status
 
 This repository is maintained as a fork.
-If you are looking for the original source, attribution chain, or upstream history, review the upstream repository and the included license file.
+If you are looking for the original ECM source, attribution chain, or upstream history, review the upstream repository and the included license file.
 
 ## Requirements
 
@@ -48,7 +48,7 @@ If your game already uses an ASI loader such as `dinput8.dll`:
 
 ## Supported Audio Formats
 
-ECM currently scans the playlist folder for these file types:
+ECM-R currently scans the playlist folder for these file types:
 
 - `.wav`
 - `.mp1`
@@ -59,7 +59,7 @@ ECM currently scans the playlist folder for these file types:
 
 ## How It Works
 
-- ECM loads music from the configured playlist folder.
+- ECM-R loads music from the configured playlist folder.
 - The game's own music volume is muted by the mod.
 - Songs are shuffled automatically.
 - When a track ends, the next one is played.
@@ -88,7 +88,7 @@ The overlay provides:
 
 ## Configuration
 
-ECM creates a configuration file automatically on first launch:
+ECM-R creates a configuration file automatically on first launch:
 
 - `ecm.x86.ini`
 
@@ -142,7 +142,7 @@ This lets you separate menu music from racing music.
 
 ## Playlist Folder
 
-By default, ECM looks for a folder named `Music` relative to the mod location.
+By default, ECM-R looks for a folder named `Music` relative to the mod location.
 
 Example:
 
@@ -161,6 +161,7 @@ Game Folder/
 - If `bass.dll` is missing or the wrong version is loaded, audio playback will fail.
 - The mod writes a crash dump file on unhandled exceptions.
 - This repository includes third-party dependencies and keeps the original MIT license notice.
+- The fork branding is ECM-R, but the runtime filenames currently remain `ecm.x86.asi` and `ecm.x86.ini` for compatibility.
 
 ## License
 

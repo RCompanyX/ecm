@@ -170,7 +170,7 @@ LONG WINAPI CustomUnhandledExceptionFilter(LPEXCEPTION_POINTERS ExceptionInfo)
 
 	_time64(&time);
 	ltime = _localtime64(&time);
-	strftime(filename, std::size(filename) - 1, "ecm-%Y%m%d%H%M%S.dmp", ltime);
+ strftime(filename, std::size(filename) - 1, "ecm-r-%Y%m%d%H%M%S.dmp", ltime);
 	_snprintf(error, std::size(error) - 1, "A minidump has been written to %s.", filename);
 
 	HANDLE hFile = CreateFileA(filename, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -190,7 +190,7 @@ LONG WINAPI CustomUnhandledExceptionFilter(LPEXCEPTION_POINTERS ExceptionInfo)
 #endif
 
 		MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, mdType, &ex, NULL, NULL);
-		MessageBoxA(NULL, error, "ECM", MB_OK | MB_ICONERROR);
+      MessageBoxA(NULL, error, "ECM-R", MB_OK | MB_ICONERROR);
 
 		CloseHandle(hFile);
 	}
@@ -203,7 +203,7 @@ DWORD WINAPI OnAttachImpl(LPVOID lpParameter)
 	std::ios_base::sync_with_stdio(false);
 
 	AllocConsole();
-	SetConsoleTitleA("ECM Debug Console");
+  SetConsoleTitleA("ECM-R Debug Console");
 
 
 	std::freopen("CONOUT$", "w", stdout);

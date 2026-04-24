@@ -1,4 +1,4 @@
-workspace "ECM"
+workspace "ECM-R"
 	location "../build/"
 	targetdir "%{wks.location}/bin/%{cfg.buildcfg}-%{cfg.platform}/"
 	objdir "%{wks.location}/obj/%{prj.name}/%{cfg.buildcfg}-%{cfg.platform}/"

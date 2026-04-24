@@ -23,13 +23,13 @@ void audio::init()
 
 	if (HIWORD(BASS_GetVersion()) != BASSVERSION)
 	{
-		global::msg_box("ECM BASS", "An incorrect version of BASS.DLL was loaded!");
+        global::msg_box("ECM-R BASS", "An incorrect version of BASS.DLL was loaded!");
 		global::shutdown = true;
 	}
 
 	if (!BASS_Init(-1, 44100, 0, global::hwnd, 0))
 	{
-		global::msg_box("ECM BASS", "Can't initialize device!\nNo audio will play for this session!");
+      global::msg_box("ECM-R BASS", "Can't initialize device!\nNo audio will play for this session!");
 	}
 
 	audio::set_volume(audio::volume);
