@@ -65,6 +65,11 @@ namespace
 		return std::string("version = \"") + VERSION + "\"";
 	}
 
+    std::string build_stop_music_on_loading_screens_line(const bool stop_music_on_loading_screens)
+	{
+		return std::string("stop_music_on_loading_screens = ") + (stop_music_on_loading_screens ? "true" : "false");
+	}
+
 	void update_config_version_only(const std::string& path)
 	{
 		const std::string contents = fs::read(path);
@@ -171,13 +176,15 @@ namespace
 		}
 	}
 
-	std::string build_config_text(const std::string& playlist, const int volume, const std::string& toggle_overlay, const std::string& skip_track)
+  std::string build_config_text(const std::string& playlist, const int volume, const std::string& toggle_overlay, const std::string& skip_track, const bool stop_music_on_loading_screens)
 	{
 		std::ostringstream output;
 		output << "[core]\n";
 		output << "playlist = \"" << playlist << "\"\n";
 		output << "volume = \"" << volume << "\"\n";
 		output << "version = \"" << VERSION << "\"\n\n";
+       output << "[config]\n";
+		output << build_stop_music_on_loading_screens_line(stop_music_on_loading_screens) << "\n\n";
 		output << "[keys]\n";
 		output << "toggle_overlay = " << toggle_overlay << "\n";
 		output << "skip_track = " << skip_track << "\n\n";
@@ -218,9 +225,11 @@ void settings::update()
 
        const bool version_changed = std::strcmp(safe_ini_get(config, "core", "version", ""), VERSION) != 0;
 		const std::string toggle_overlay = safe_ini_get(config, "keys", "toggle_overlay", "F11");
-		const std::string skip_track = safe_ini_get(config, "keys", "skip_track", "F10");
+       const std::string skip_track = safe_ini_get(config, "keys", "skip_track", "F10");
+		const bool missing_stop_music_on_loading_screens = ini_get(config, "config", "stop_music_on_loading_screens") == nullptr;
 
 		audio::volume = std::stoi(safe_ini_get(config, "core", "volume", "100"));
+     audio::stop_music_on_loading_screens = settings::get_boolean(safe_ini_get(config, "config", "stop_music_on_loading_screens", "true"));
 		input::toggle_overlay_key = input::key_from_string(toggle_overlay.c_str(), VK_F11);
 		input::skip_track_key = input::key_from_string(skip_track.c_str(), VK_F10);
 
@@ -237,9 +246,9 @@ void settings::update()
 			audio::playlist_files[i].second = normalize_trax_value(res);
 		}
 
-        if (version_changed)
+        if (version_changed || missing_stop_music_on_loading_screens)
 		{
-			update_config_version_only(settings::config_file);
+          fs::write(settings::config_file, build_config_text(audio::playlist_name, audio::volume, toggle_overlay, skip_track, audio::stop_music_on_loading_screens), false);
 		}
 	}
 	else if (!fs::exists(settings::config_file))
@@ -258,7 +267,8 @@ void settings::update()
 		}
 
 		audio::volume = 100;
-		fs::write(settings::config_file, build_config_text(audio::playlist_name, audio::volume, "F11", "F10"), false);
+      audio::stop_music_on_loading_screens = true;
+		fs::write(settings::config_file, build_config_text(audio::playlist_name, audio::volume, "F11", "F10", audio::stop_music_on_loading_screens), false);
 		return;
 	}
 
@@ -267,8 +277,23 @@ void settings::update()
 
 bool settings::get_boolean(const char* bool_text)
 {
-	if (!std::strcmp(bool_text, "true")) return true;
-	else return false;
+   if (!bool_text)
+	{
+		return false;
+	}
+
+	std::string value = trim_copy(bool_text);
+	if (value.size() >= 2 && value.front() == '"' && value.back() == '"')
+	{
+		value = value.substr(1, value.size() - 2);
+		value = trim_copy(value);
+	}
+
+	std::transform(value.begin(), value.end(), value.begin(), [](unsigned char ch) {
+		return static_cast<char>(std::tolower(ch));
+	});
+
+	return value == "true" || value == "1" || value == "yes" || value == "on";
 }
 
 //Hardcoded until x64 becomes useable

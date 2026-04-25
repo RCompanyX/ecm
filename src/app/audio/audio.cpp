@@ -42,6 +42,21 @@ void audio::update()
 {
 	global::state = game_state;
 
+	const bool is_loading_state =
+		global::state == GameFlowState::LoadingFrontend ||
+		global::state == GameFlowState::LoadingRegion ||
+		global::state == GameFlowState::LoadingTrack;
+
+   if (audio::stop_music_on_loading_screens && is_loading_state)
+	{
+		if (audio::playing)
+		{
+			audio::stop(0);
+		}
+
+		return;
+	}
+
 	std::uint32_t state = BASS_ChannelIsActive(audio::chan[0]);
 
 	switch (state)
@@ -60,7 +75,7 @@ void audio::update()
 	switch (global::state)
 	{
 		//Frontend
-	case GameFlowState::LoadingFrontend:
+ case GameFlowState::LoadingFrontend:
 	case GameFlowState::InFrontend:
 		if(audio::playlist_files[audio::playlist_order[audio::current_song_index]].second == "IG")
 		{
@@ -219,6 +234,7 @@ bool audio::playing = false;
 std::int32_t audio::req;
 std::int32_t audio::chan[2];
 std::int32_t audio::volume = 50;
+bool audio::stop_music_on_loading_screens = true;
 playing_t audio::currently_playing = {"N/A"};
 std::string audio::playlist_name = "Music";
 std::string audio::playlist_dir = "Music";

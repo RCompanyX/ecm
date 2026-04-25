@@ -40,6 +40,7 @@ public:
 	static std::int32_t chan[2];
 
 	static std::int32_t volume;
+	static bool stop_music_on_loading_screens;
 
 	static playing_t currently_playing;
 };
