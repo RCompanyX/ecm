@@ -77,7 +77,7 @@ workspace "ECM-R"
 		symbols "on"
 
 	project "Overlay"
-		targetname "%{cfg.architecture}/ecm.%{cfg.architecture}"
+        targetname "%{cfg.architecture}/ecm-r.%{cfg.architecture}"
 		language "c++"
 		cppdialect "c++17"
 		kind "sharedlib"
@@ -149,7 +149,7 @@ workspace "ECM-R"
        filter "platforms:Win-x86"
 			postbuildcommands {
 				"IF NOT EXIST \"$(OutDir)\"x86 mkdir \"$(OutDir)x86\\",
-				"copy /y \"$(OutDir)x86\\ecm.x86.dll\" \"$(OutDir)x86\\ecm.x86.asi\"",
+              "copy /y \"$(OutDir)x86\\ecm-r.x86.dll\" \"$(OutDir)x86\\ecm-r.x86.asi\"",
                "IF EXIST \"..\\deps\\bass\\Win32\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
 			}
 
@@ -157,9 +157,9 @@ workspace "ECM-R"
 			postbuildcommands {
 				"IF NOT EXIST \"$(OutDir)\"x86 mkdir \"$(OutDir)x86\\",
 				"IF NOT EXIST \"$(OutDir)\"x86_64 mkdir \"$(OutDir)x86_64\\",
-				"copy /y \"$(OutDir)x86\\ecm.x86.dll\" \"$(OutDir)x86\\ecm.x86.asi\"",
+              "copy /y \"$(OutDir)x86\\ecm-r.x86.dll\" \"$(OutDir)x86\\ecm-r.x86.asi\"",
                "IF EXIST \"..\\deps\\bass\\Win32\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
-				"copy /y \"$(OutDir)x86_64\\ecm.x86_64.dll\" \"$(OutDir)x86_64\\ecm.x86_64.asi\"",
+              "copy /y \"$(OutDir)x86_64\\ecm-r.x86_64.dll\" \"$(OutDir)x86_64\\ecm-r.x86_64.asi\"",
               "IF EXIST \"..\\deps\\bass\\Win32\\x64\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86_64\\bass.dll copy /y \"..\\deps\\bass\\Win32\\x64\\bass.dll\" \"$(OutDir)\"\\x86_64\\",
 			}
 

@@ -164,4 +164,4 @@ bool settings::get_boolean(const char* bool_text)
 }
 
 //Hardcoded until x64 becomes useable
-std::string settings::config_file = "ecm.x86.ini";
+std::string settings::config_file = "ecm-r.x86.ini";

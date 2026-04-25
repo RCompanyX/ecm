@@ -67,8 +67,8 @@ This does two things:
 
 For the 32-bit release build, the generated files are placed in:
 
-- `build/bin/Release-Win-x86/x86/ecm.x86.dll`
-- `build/bin/Release-Win-x86/x86/ecm.x86.asi`
+- `build/bin/Release-Win-x86/x86/ecm-r.x86.dll`
+- `build/bin/Release-Win-x86/x86/ecm-r.x86.asi`
 - `build/bin/Release-Win-x86/x86/bass.dll`
 
 ## 4. Runtime package
@@ -77,7 +77,7 @@ The build produces the DLL and also creates an `.asi` copy during post-build.
 
 The final runtime package should include at least:
 
-- `ecm.x86.asi`
+- `ecm-r.x86.asi`
 
 This project uses the native BASS C/C++ API, and `bass.dll` is also required at runtime. If you do not bundle it with your release package, users can obtain it from the official BASS website:
 
@@ -96,7 +96,7 @@ msbuild build\ECM-R.sln /t:Overlay /p:Configuration=Release /p:Platform=Win-x86 
 Copy the runtime files into the location used by your ASI loader or mod manager.
 For a typical setup, this means placing:
 
-- `ecm.x86.asi`
+- `ecm-r.x86.asi`
 - `bass.dll` (if bundled separately or obtained from the official BASS website)
 
 next to the game executable or inside the mod loader's expected scripts directory.
@@ -133,5 +133,5 @@ Build and deploy `Release | Win-x86` unless you are targeting a different loader
 ## Branding note
 
 ECM-R is a fork of the original ECM project by **BttrDrgn**.
-The repository branding has been updated to ECM-R, but the runtime filenames currently remain `ecm.x86.asi` and `ecm.x86.ini` for compatibility.
+The repository branding has been updated to ECM-R, and the runtime filenames follow the `ecm-r.*` naming scheme.
 BASS is a third-party dependency and should be obtained, used, or redistributed according to the applicable BASS license terms.

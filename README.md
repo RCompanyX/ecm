@@ -35,7 +35,7 @@ Build instructions for generating the plugin are available in [BUILDING.md](BUIL
 If you use [Mr. Modman](https://github.com/VelocityCL/mr.modman):
 
 1. Extract the files from the `scripts` folder into your game's global directory or pack directory.
-2. Make sure `ecm.x86.asi` is included.
+2. Make sure `ecm-r.x86.asi` is included.
 3. Obtain `bass.dll` from the official BASS website if it is not bundled with your setup: https://www.un4seen.com/
 3. Create a folder named `Music` next to the mod files.
 4. Put your songs inside that folder.
@@ -45,7 +45,7 @@ If you use [Mr. Modman](https://github.com/VelocityCL/mr.modman):
 If your game already uses an ASI loader such as `dinput8.dll`:
 
 1. Extract the release files into the game directory.
-2. Make sure `ecm.x86.asi` is present.
+2. Make sure `ecm-r.x86.asi` is present.
 3. Obtain `bass.dll` from the official BASS website if it is not already available in your game setup: https://www.un4seen.com/
 3. Create a `Music` folder in the expected mod location.
 4. Put your songs inside that folder.
@@ -77,7 +77,7 @@ If a filename follows the format `Artist - Title.ext`, the overlay chyron uses t
 - `F11`: Toggle the in-game overlay by default
 - `F10`: Skip to the next song by default
 
-Both hotkeys can be changed in `ecm.x86.ini`.
+Both hotkeys can be changed in `ecm-r.x86.ini`.
 
 ## Overlay
 
@@ -94,7 +94,7 @@ The overlay provides:
 
 ECM-R creates a configuration file automatically on first launch:
 
-- `ecm.x86.ini`
+- `ecm-r.x86.ini`
 
 Default configuration:
 
@@ -153,7 +153,7 @@ Example:
 ```text
 Game Folder/
   scripts/
-    ecm.x86.asi
+    ecm-r.x86.asi
     bass.dll
     Music/
       Artist - Song 01.mp3
@@ -169,7 +169,7 @@ Game Folder/
 - ECM-R is distributed as a non-commercial fork project. If your usage, redistribution, or packaging of BASS goes beyond non-commercial use, review the official BASS licensing terms before shipping it.
 - The mod writes a crash dump file on unhandled exceptions.
 - This repository includes third-party dependencies and keeps the original MIT license notice.
-- The fork branding is ECM-R, but the runtime filenames currently remain `ecm.x86.asi` and `ecm.x86.ini` for compatibility.
+- The fork branding is ECM-R, and the runtime filenames follow the `ecm-r.*` naming scheme.
 
 ## License
 
