@@ -211,6 +211,19 @@ Game Folder/
       Artist - Song 02.ogg
 ```
 
+## Planned Features
+
+The following features are planned for future releases:
+
+- **Pause/Resume Control** - Persistent pause state that maintains playback position
+- **Multiple Playlists** - Switch between different music folders dynamically within the game
+- **Advanced Context Filters** - More granular playback rules beyond FE/IG (events, game modes, etc.)
+- **Context-Based Volume Control** - Different volume levels for frontend and in-game music
+- **Lip-Sync Synchronization** - Adjust audio synchronization for cutscenes and cinematics
+- **Volume Normalization** - Automatic level equalization across all tracks
+- **Real-Time Audio Format Conversion** - Support for additional audio formats through runtime conversion
+- **Previous Track Control** - Skip to the previous song, complementing the existing skip-next functionality
+
 ## Notes
 
 - If `bass.dll` is missing or the wrong version is loaded, audio playback will fail.
