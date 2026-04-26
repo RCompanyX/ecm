@@ -18,7 +18,6 @@ This changelog currently tracks the tagged releases recorded in this repository.
 - Updated input handling to share common logic between forward and backward navigation.
 
 ### Documentation
-- Added `docs/releases/v0.5.4-alpha.md` with detailed feature documentation.
 - Updated README to include the new `previous_track` key binding and Previous button in the overlay.
 - Removed **Previous Track Control** from Planned Features as it is now implemented.
 
