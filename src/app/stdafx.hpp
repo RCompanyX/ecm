@@ -30,9 +30,7 @@
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_opengl3.h>
 
-#include <bass.h>
-
 
 #define __fartcall __fastcall
 
-#define VERSION "v0.5.2-alpha"
+#define VERSION "v0.5.3-alpha"
