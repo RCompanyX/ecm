@@ -107,10 +107,18 @@ On first launch, ECM-R also creates `ecm-r.x86.ini` automatically. The generated
 
 ```ini
 [config]
+shuffle_enabled = true
+repeat_enabled = true
 stop_music_on_loading_screens = true
 ```
 
-This option controls whether custom music is stopped during loading screens. The default value is `true` to better match the game's original behavior.
+These options control playlist playback behavior and loading screen handling:
+
+- `shuffle_enabled = true`: play valid tracks in shuffled order.
+- `repeat_enabled = true`: restart the valid track list after the last song finishes.
+- `stop_music_on_loading_screens = true`: stop custom music during loading screens.
+
+The default values are enabled to preserve the expected ECM-R playback experience.
 
 ## Troubleshooting
 

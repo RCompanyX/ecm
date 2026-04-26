@@ -4,6 +4,21 @@ All notable changes to ECM-R are documented in this file.
 
 This changelog currently tracks the tagged releases recorded in this repository.
 
+## [v0.5.2-alpha] - 2026-04-26
+
+### Added
+- Added configurable `shuffle_enabled` and `repeat_enabled` playlist options.
+- Added overlay controls to toggle shuffle and repeat modes at runtime.
+
+### Changed
+- Playlist playback can now run in sequential mode when shuffle is disabled.
+- Playlist looping can now be disabled so playback stops after the last valid track.
+- The generated `ecm-r.x86.ini` file now persists shuffle and repeat settings.
+
+### Documentation
+- Updated the changelog for the new playlist playback options.
+- Updated project documentation to describe the new configuration entries and overlay behavior.
+
 ## [v0.5.1-alpha] - 2026-04-25
 
 ### Added
@@ -37,3 +52,4 @@ This changelog currently tracks the tagged releases recorded in this repository.
 
 [v0.5.0-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.0-alpha
 [v0.5.1-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.1-alpha
+[v0.5.2-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.2-alpha

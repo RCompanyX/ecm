@@ -69,6 +69,7 @@ ECM-R currently scans the playlist folder for these file types:
 - When a track ends, the next one is played.
 - Songs can be tagged for frontend-only or in-game-only playback through the configuration file.
 - Music can be stopped automatically during loading screens to better match the game's original behavior.
+- Shuffle and repeat playback behavior can be changed from the overlay or configuration file.
 
 If a filename follows the format `Artist - Title.ext`, the overlay chyron uses that information when possible.
 
@@ -86,6 +87,8 @@ The overlay provides:
 - An **Actions** menu
   - Volume slider
   - Skip button
+  - Shuffle toggle
+  - Repeat toggle
 - A **Playlist** menu
   - Displays the discovered songs
 - A status line showing the current song and playlist name
@@ -105,6 +108,8 @@ volume = "100"
 version = "..."
 
 [config]
+shuffle_enabled = true
+repeat_enabled = true
 stop_music_on_loading_screens = true
 
 [keys]
@@ -125,9 +130,14 @@ song3.mp3 = IG
 
 ### Config Settings
 
+- `shuffle_enabled`: Controls whether valid tracks are shuffled before playback. Default is `true`.
+- `repeat_enabled`: Controls whether playback restarts from the beginning of the valid track list after the last song finishes. Default is `true`.
 - `stop_music_on_loading_screens`: Controls whether ECM-R stops the current song during loading screens before starting another song after loading. Default is `true`.
 
 Accepted values include `true`, `false`, `1`, `0`, `yes`, `no`, `on`, and `off`.
+
+If `shuffle_enabled` is set to `false`, ECM-R plays valid tracks in their discovered order.
+If `repeat_enabled` is set to `false`, playback stops after the last valid track in the current context.
 
 ### Key Bindings
 
@@ -165,6 +175,20 @@ stop_music_on_loading_screens = true
 ```
 
 Set it to `false` if you want custom music to continue following the older behavior.
+
+## Playback Modes
+
+ECM-R exposes shuffle and repeat controls in the overlay and stores their values in `ecm-r.x86.ini`.
+
+```ini
+[config]
+shuffle_enabled = true
+repeat_enabled = true
+```
+
+- Set `shuffle_enabled = false` for sequential playback.
+- Set `repeat_enabled = false` to stop playback after the last valid track.
+- Changes made from the overlay are saved back to the configuration file automatically.
 
 ## Playlist Folder
 
