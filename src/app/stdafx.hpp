@@ -30,8 +30,6 @@
 #include <backends/imgui_impl_dx11.h>
 #include <backends/imgui_impl_opengl3.h>
 
-#include <bass.h>
-
 
 #define __fartcall __fastcall
 

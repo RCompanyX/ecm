@@ -20,7 +20,6 @@ For **Need for Speed: Underground 2**, the relevant target is the **32-bit** bui
 This repository already includes or references the main dependencies needed for compilation:
 
 - `tools/premake5.exe`
-- `deps/bass`
 - `deps/freetype-2.12.1`
 - Git submodules:
   - `deps/imgui`
@@ -69,7 +68,6 @@ For the 32-bit release build, the generated files are placed in:
 
 - `build/bin/Release-Win-x86/x86/ecm-r.x86.dll`
 - `build/bin/Release-Win-x86/x86/ecm-r.x86.asi`
-- `build/bin/Release-Win-x86/x86/bass.dll`
 
 ## 4. Runtime package
 
@@ -78,10 +76,16 @@ The build produces the DLL and also creates an `.asi` copy during post-build.
 The final runtime package should include at least:
 
 - `ecm-r.x86.asi`
+- `ecm-r.x86.ini` (or allow ECM-R to create it on first launch)
+- `bass.dll` downloaded from the official BASS website
 
-This project uses the native BASS C/C++ API, and `bass.dll` is also required at runtime. If you do not bundle it with your release package, users can obtain it from the official BASS website:
+This project loads the native BASS runtime dynamically, and `bass.dll` is required at runtime. Users should obtain it from the official BASS website:
 
 - https://www.un4seen.com/
+
+The current runtime integration has been tested with BASS `v2.4.18.11`.
+ECM-R does not bundle or redistribute `bass.dll`; users must obtain the official runtime themselves.
+BASS remains subject to the official BASS license terms, and commercial usage may require a separate licence.
 
 ## 5. Optional command-line build
 
@@ -97,9 +101,10 @@ Copy the runtime files into the location used by your ASI loader or mod manager.
 For a typical setup, this means placing:
 
 - `ecm-r.x86.asi`
-- `bass.dll` (if bundled separately or obtained from the official BASS website)
+- `ecm-r.x86.ini`
+- `bass.dll` obtained from the official BASS website
 
-next to the game executable or inside the mod loader's expected scripts directory.
+inside the mod loader's expected `scripts` directory, with `bass.dll` placed next to the ECM-R runtime files.
 
 Then create a `Music` folder in the expected mod location and place the audio files there.
 
@@ -151,4 +156,4 @@ Build and deploy `Release | Win-x86` unless you are targeting a different loader
 
 ECM-R is a fork of the original ECM project by **BttrDrgn**.
 The repository branding has been updated to ECM-R, and the runtime filenames follow the `ecm-r.*` naming scheme.
-BASS is a third-party dependency and should be obtained, used, or redistributed according to the applicable BASS license terms.
+BASS is a third-party runtime dependency and remains subject to the official BASS license terms.

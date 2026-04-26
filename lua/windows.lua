@@ -39,22 +39,14 @@ workspace "ECM-R"
 		"_SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING",
 	}
 
-	--x86
+   --x86
 	filter "platforms:Win-x86"	
 		architecture "x86"
-
-		syslibdirs {
-			"../deps/bass/Win32/c/",
-		}
 	--end
 
 	--x64
 	filter "platforms:Win-x64"
 		architecture "x86_64"
-
-		syslibdirs {
-			"../deps/bass/Win32/c/x64/",
-		}
 	--end
 
 	filter "Release"
@@ -108,7 +100,6 @@ workspace "ECM-R"
 			"dbghelp",
 			"imgui",
 			"ft2",
-			"bass",
 			"ini_rw",
 			"MinHook",
 		}
@@ -118,7 +109,6 @@ workspace "ECM-R"
 			"../src/utils/",
 			"../deps/imgui/backends/",
 			"../deps/imgui/misc/freetype/",
-			"../deps/bass/Win32/c/",
 			"../deps/ini_rw/src/",
 			"../deps/kiero/",
 			"../deps/minhook/include/",
@@ -140,8 +130,6 @@ workspace "ECM-R"
 			"../src/utils/fs/**",
 			"../src/utils/logger/**",
 
-			"../deps/bass/Win32/c/bass.h",
-
 			"../deps/kiero/*.h",
 			"../deps/kiero/*.cpp",
 		}
@@ -149,8 +137,7 @@ workspace "ECM-R"
        filter "platforms:Win-x86"
 			postbuildcommands {
 				"IF NOT EXIST \"$(OutDir)\"x86 mkdir \"$(OutDir)x86\\",
-              "copy /y \"$(OutDir)x86\\ecm-r.x86.dll\" \"$(OutDir)x86\\ecm-r.x86.asi\"",
-               "IF EXIST \"..\\deps\\bass\\Win32\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
+                  "copy /y \"$(OutDir)x86\\ecm-r.x86.dll\" \"$(OutDir)x86\\ecm-r.x86.asi\"",
 			}
 
        filter "platforms:Win-x64"
@@ -158,9 +145,7 @@ workspace "ECM-R"
 				"IF NOT EXIST \"$(OutDir)\"x86 mkdir \"$(OutDir)x86\\",
 				"IF NOT EXIST \"$(OutDir)\"x86_64 mkdir \"$(OutDir)x86_64\\",
               "copy /y \"$(OutDir)x86\\ecm-r.x86.dll\" \"$(OutDir)x86\\ecm-r.x86.asi\"",
-               "IF EXIST \"..\\deps\\bass\\Win32\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86\\bass.dll copy /y \"..\\deps\\bass\\Win32\\bass.dll\" \"$(OutDir)\"x86\\",
               "copy /y \"$(OutDir)x86_64\\ecm-r.x86_64.dll\" \"$(OutDir)x86_64\\ecm-r.x86_64.asi\"",
-              "IF EXIST \"..\\deps\\bass\\Win32\\x64\\bass.dll\" IF NOT EXIST \"$(OutDir)\"x86_64\\bass.dll copy /y \"..\\deps\\bass\\Win32\\x64\\bass.dll\" \"$(OutDir)\"\\x86_64\\",
 			}
 
 		filter {}

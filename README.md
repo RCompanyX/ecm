@@ -36,9 +36,11 @@ If you use [Mr. Modman](https://github.com/VelocityCL/mr.modman):
 
 1. Extract the files from the `scripts` folder into your game's global directory or pack directory.
 2. Make sure `ecm-r.x86.asi` is included.
-3. Obtain `bass.dll` from the official BASS website if it is not bundled with your setup: https://www.un4seen.com/
-3. Create a folder named `Music` next to the mod files.
-4. Put your songs inside that folder.
+3. Download `bass.dll` from the official BASS website: https://www.un4seen.com/
+4. Place `bass.dll` in the same `scripts` folder as ECM-R.
+5. Make sure `ecm-r.x86.ini` is present or allow ECM-R to create it on first launch.
+6. Create a folder named `Music` next to the mod files.
+7. Put your songs inside that folder.
 
 ### Option 2: ASI Loader
 
@@ -46,9 +48,11 @@ If your game already uses an ASI loader such as `dinput8.dll`:
 
 1. Extract the release files into the game directory.
 2. Make sure `ecm-r.x86.asi` is present.
-3. Obtain `bass.dll` from the official BASS website if it is not already available in your game setup: https://www.un4seen.com/
-3. Create a `Music` folder in the expected mod location.
-4. Put your songs inside that folder.
+3. Download `bass.dll` from the official BASS website: https://www.un4seen.com/
+4. Place `bass.dll` in the same `scripts` folder as ECM-R.
+5. Make sure `ecm-r.x86.ini` is present or allow ECM-R to create it on first launch.
+6. Create a `Music` folder in the expected mod location.
+7. Put your songs inside that folder.
 
 ## Supported Audio Formats
 
@@ -200,6 +204,7 @@ Example:
 Game Folder/
   scripts/
     ecm-r.x86.asi
+    ecm-r.x86.ini
     bass.dll
     Music/
       Artist - Song 01.mp3
@@ -209,10 +214,14 @@ Game Folder/
 ## Notes
 
 - If `bass.dll` is missing or the wrong version is loaded, audio playback will fail.
-- This project uses the native BASS C/C++ API and requires `bass.dll` at runtime.
-- `bass.dll` can be obtained from the official BASS website: https://www.un4seen.com/
-- BASS is a third-party library and should be used or redistributed according to the applicable BASS license terms.
-- ECM-R is distributed as a non-commercial fork project. If your usage, redistribution, or packaging of BASS goes beyond non-commercial use, review the official BASS licensing terms before shipping it.
+- This project loads the official BASS runtime dynamically and requires `bass.dll` at runtime.
+- Download `bass.dll` from the official BASS website: https://www.un4seen.com/
+- Place `bass.dll` in the same `scripts` folder as ECM-R runtime files.
+- The current runtime integration has been tested with BASS `v2.4.18.11`.
+- BASS is a third-party library and remains subject to the official BASS license terms.
+- ECM-R does not bundle or redistribute `bass.dll`; users must obtain the official runtime themselves.
+- ECM-R is maintained as a non-commercial fork project.
+- If your usage of ECM-R or BASS becomes commercial, review the official BASS licensing terms and obtain any required licence before distribution.
 - The mod writes a crash dump file on unhandled exceptions.
 - This repository includes third-party dependencies and keeps the original MIT license notice.
 - The fork branding is ECM-R, and the runtime filenames follow the `ecm-r.*` naming scheme.

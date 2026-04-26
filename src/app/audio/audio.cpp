@@ -2,6 +2,7 @@
 #include "global.hpp"
 
 #include "audio.hpp"
+#include "bass_api.hpp"
 #include "player.hpp"
 #include "fs/fs.hpp"
 #include "hook/hook.hpp"
@@ -76,15 +77,29 @@ void audio::init()
 		break;
 	}
 
-	if (HIWORD(BASS_GetVersion()) != BASSVERSION)
+   if (!bass_api::load())
+	{
+        const std::string error_message = logger::va("bass.dll could not be loaded!\n%s\nNo audio will play for this session!", bass_api::last_error().c_str());
+		logger::log_error(logger::va("Failed to load bass.dll: %s", bass_api::last_error().c_str()));
+		global::msg_box("ECM-R BASS", error_message.c_str());
+		global::shutdown = true;
+		return;
+	}
+
+	if (HIWORD(bass_api::get_version()) != bass_api::version)
 	{
       global::msg_box("ECM-R BASS", "An incorrect version of BASS.DLL was loaded!");
 		global::shutdown = true;
+       bass_api::unload();
+		return;
 	}
 
-	if (!BASS_Init(-1, 44100, 0, global::hwnd, 0))
+  if (!bass_api::init_device(global::hwnd))
 	{
       global::msg_box("ECM-R BASS", "Can't initialize device!\nNo audio will play for this session!");
+       bass_api::unload();
+		global::shutdown = true;
+		return;
 	}
 
 	audio::set_volume(audio::volume);
@@ -112,11 +127,11 @@ void audio::update()
 		return;
 	}
 
-	std::uint32_t state = BASS_ChannelIsActive(audio::chan[0]);
+ std::uint32_t state = bass_api::channel_is_active(audio::chan[0]);
 
 	switch (state)
 	{
-	case BASS_ACTIVE_STOPPED:
+   case bass_api::active_stopped:
 		audio::playing = false;
 		break;
 	}
@@ -147,7 +162,7 @@ void audio::stop(int channel)
 	audio::paused = false;
 	audio::playing = false;
 
-	BASS_StreamFree(audio::chan[channel]);
+  bass_api::stream_free(audio::chan[channel]);
 	audio::chan[channel] = 0;
 
 	audio::currently_playing.title = "N/A";
@@ -226,13 +241,13 @@ void audio::create_playlist_order()
 void audio::play()
 {
 	audio::paused = false;
-	BASS_Start();
+   bass_api::start();
 }
 
 void audio::pause()
 {
 	audio::paused = true;
-	BASS_Pause();
+   bass_api::pause();
 }
 
 void audio::enumerate_playlist()
@@ -299,7 +314,7 @@ void audio::play_next_song()
 
 void audio::set_volume(std::int32_t vol_in)
 {
-	BASS_SetConfig(BASS_CONFIG_GVOL_STREAM, vol_in * 100);
+  bass_api::set_stream_volume_config(vol_in);
 }
 
 bool audio::paused = false;

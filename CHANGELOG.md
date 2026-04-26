@@ -4,6 +4,14 @@ All notable changes to ECM-R are documented in this file.
 
 This changelog currently tracks the tagged releases recorded in this repository.
 
+## [v0.5.3-alpha] - 2026-04-26
+
+### Changed
+- BASS is now loaded dynamically at runtime from `bass.dll` placed next to the ECM-R runtime files.
+
+### Documentation
+- Updated installation and build documentation to require downloading the official `bass.dll` and note testing with BASS `v2.4.18.11`.
+
 ## [v0.5.2-alpha] - 2026-04-26
 
 ### Added
@@ -53,3 +61,4 @@ This changelog currently tracks the tagged releases recorded in this repository.
 [v0.5.0-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.0-alpha
 [v0.5.1-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.1-alpha
 [v0.5.2-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.2-alpha
+[v0.5.3-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.3-alpha
