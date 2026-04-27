@@ -10,6 +10,9 @@
 - Preserve compatibility-sensitive runtime filenames unless a task explicitly requires changing them.
 - New work branches must start with the prefix `dev_`.
 
+## Code Style
+- Prefer a shared helper for playlist navigation with small wrappers like `play_next_song()` and `play_previous_song()`, instead of using boolean flags for direction.
+
 ## Release Documentation
 - For release documentation, only include features introduced in the target release and do not mix in items from previous releases.
 

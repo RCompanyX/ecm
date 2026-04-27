@@ -117,10 +117,24 @@ void menus::actions()
 			ini_save(config, settings::config_file.c_str());
 		}
 
-		if (ImGui::Button("Skip") && audio::playing)
+        if (ImGui::Button("Previous"))
 		{
-			audio::stop(0);
-			audio::play_next_song();
+			audio::play_previous_song();
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Skip"))
+		{
+         if (audio::playing)
+			{
+				audio::stop(0);
+				audio::play_next_song();
+			}
+			else if (!audio::paused)
+			{
+				audio::play_next_song();
+			}
 		}
 
 		bool shuffle_enabled = audio::shuffle_enabled;

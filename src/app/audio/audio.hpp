@@ -24,6 +24,7 @@ public:
    static const char* current_playlist_context();
 	static int current_playlist_track_count();
 	static void play_next_song();
+    static void play_previous_song();
 	static void pause();
 	static void play();
 
@@ -31,7 +32,9 @@ public:
 	static std::string playlist_dir;
 	static std::vector<std::pair<std::string, std::string>> playlist_files;
 	static std::vector<int> playlist_order;
+  static std::vector<int> playback_history;
 	static int current_song_index;
+   static int playback_history_index;
 	static std::int32_t playlist_context;
 
 	static std::vector<const char*> mute_detection;

@@ -33,4 +33,5 @@ public:
 	static std::unordered_map<input::callback_type, std::vector<input::callback>> callbacks_;
   static std::uint32_t toggle_overlay_key;
 	static std::uint32_t skip_track_key;
+  static std::uint32_t previous_track_key;
 };

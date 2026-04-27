@@ -80,6 +80,7 @@ If a filename follows the format `Artist - Title.ext`, the overlay chyron uses t
 ## Controls
 
 - `F11`: Toggle the in-game overlay by default
+- `F9`: Go back to the previous song by default
 - `F10`: Skip to the next song by default
 
 Both hotkeys can be changed in `ecm-r.x86.ini`.
@@ -90,6 +91,7 @@ The overlay provides:
 
 - An **Actions** menu
   - Volume slider
+  - Previous button
   - Skip button
   - Shuffle toggle
   - Repeat toggle
@@ -118,6 +120,7 @@ stop_music_on_loading_screens = true
 
 [keys]
 toggle_overlay = F11
+previous_track = F9
 skip_track = F10
 
 [trax]
@@ -146,6 +149,7 @@ If `repeat_enabled` is set to `false`, playback stops after the last valid track
 ### Key Bindings
 
 - `toggle_overlay`: Key used to show or hide the overlay.
+- `previous_track`: Key used to go back to the previous song.
 - `skip_track`: Key used to jump to the next song.
 
 Supported values include:
@@ -222,7 +226,6 @@ The following features are planned for future releases:
 - **Lip-Sync Synchronization** - Adjust audio synchronization for cutscenes and cinematics
 - **Volume Normalization** - Automatic level equalization across all tracks
 - **Real-Time Audio Format Conversion** - Support for additional audio formats through runtime conversion
-- **Previous Track Control** - Skip to the previous song, complementing the existing skip-next functionality
 
 ## Notes
 

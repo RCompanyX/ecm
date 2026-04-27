@@ -8,7 +8,29 @@
 WNDPROC o_wndproc;
 bool toggle_once = false;
 bool skip_once = false;
+bool previous_once = false;
 std::unordered_map<input::callback_type, std::vector<input::callback>> input::callbacks_;
+
+namespace
+{
+	void skip_to_next_track()
+	{
+		if (audio::playing)
+		{
+			audio::stop(0);
+			audio::play_next_song();
+		}
+		else if (!audio::paused)
+		{
+			audio::play_next_song();
+		}
+	}
+
+	void skip_to_previous_track()
+	{
+		audio::play_previous_song();
+	}
+}
 
 std::uint32_t input::key_from_string(const char* key_text, std::uint32_t default_key)
 {
@@ -119,17 +141,14 @@ void input::init_overlay()
 
         if (key == input::skip_track_key && !skip_once)
 		{
-			if (audio::playing)
-			{
-				audio::stop(0);
-				audio::play_next_song();
-			}
-			else if (!audio::paused)
-			{
-				audio::play_next_song();
-			}
-
+         skip_to_next_track();
 			skip_once = true;
+		}
+
+		if (key == input::previous_track_key && !previous_once)
+		{
+			skip_to_previous_track();
+			previous_once = true;
 		}
 
 		return input::result_type::cont;
@@ -147,6 +166,11 @@ void input::init_overlay()
 			skip_once = false;
 		}
 
+		if (key == input::previous_track_key && previous_once)
+		{
+			previous_once = false;
+		}
+
 		return input::result_type::cont;
 	});
 }
@@ -157,21 +181,23 @@ void input::update()
 	const bool skip_down = (GetAsyncKeyState(input::skip_track_key) & 0x8000) != 0;
 	if (skip_down && !skip_once)
 	{
-		if (audio::playing)
-		{
-			audio::stop(0);
-			audio::play_next_song();
-		}
-		else if (!audio::paused)
-		{
-			audio::play_next_song();
-		}
-
+     skip_to_next_track();
 		skip_once = true;
 	}
 	else if (!skip_down && skip_once)
 	{
 		skip_once = false;
+	}
+
+	const bool previous_down = (GetAsyncKeyState(input::previous_track_key) & 0x8000) != 0;
+	if (previous_down && !previous_once)
+	{
+		skip_to_previous_track();
+		previous_once = true;
+	}
+	else if (!previous_down && previous_once)
+	{
+		previous_once = false;
 	}
 }
 
@@ -188,3 +214,4 @@ bool input::is_key_down(std::uint32_t key)
 
 std::uint32_t input::toggle_overlay_key = VK_F11;
 std::uint32_t input::skip_track_key = VK_F10;
+std::uint32_t input::previous_track_key = VK_F9;

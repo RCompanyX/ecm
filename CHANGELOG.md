@@ -4,6 +4,26 @@ All notable changes to ECM-R are documented in this file.
 
 This changelog currently tracks the tagged releases recorded in this repository.
 
+## [v0.5.4-alpha] - 2026-04-27
+
+### Added
+- Added **Previous Track** control to navigate backward through the playlist.
+- Added configurable `previous_track` key binding (default `F9`).
+- Added **Previous** button to the overlay Actions menu.
+- Added playback history tracking for shuffle mode (limited to 50 entries) to ensure previous returns to the actually-played track.
+- Support for previous track navigation respects playlist context filtering (`ALL`, `FE`, `IG`) and repeat mode.
+
+### Changed
+- Refactored next/previous playlist navigation to use a unified helper function (`play_relative_song()`) for consistency and maintainability.
+- Simplified `play_next_song()` and `play_previous_song()` to small wrappers.
+- Updated input handling to share common logic between forward and backward navigation.
+- Enhanced shuffle mode with playback history tracking (in-memory, max 50 entries) for intuitive previous-track navigation.
+- Playback history is automatically cleared when switching to sequential mode to avoid interference with position-based navigation.
+
+### Documentation
+- Updated README to include the new `previous_track` key binding and Previous button in the overlay.
+- Removed **Previous Track Control** from Planned Features as it is now implemented.
+
 ## [v0.5.3-alpha] - 2026-04-26
 
 ### Changed
@@ -62,3 +82,4 @@ This changelog currently tracks the tagged releases recorded in this repository.
 [v0.5.1-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.1-alpha
 [v0.5.2-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.2-alpha
 [v0.5.3-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.3-alpha
+[v0.5.4-alpha]: https://github.com/RCompanyX/ecm/releases/tag/v0.5.4-alpha

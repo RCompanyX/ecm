@@ -14,6 +14,8 @@
 
 namespace
 {
+    constexpr int max_playback_history_entries = 50;
+
 	enum class playlist_context_t : std::int32_t
 	{
 		all,
@@ -60,6 +62,192 @@ namespace
 		default:
 			return true;
 		}
+	}
+
+	void clear_playback_history()
+	{
+		audio::playback_history.clear();
+		audio::playback_history_index = -1;
+	}
+
+	void record_playback_history(const int playlist_entry_index)
+	{
+		if (audio::playback_history_index + 1 < static_cast<int>(audio::playback_history.size()))
+		{
+			audio::playback_history.erase(audio::playback_history.begin() + audio::playback_history_index + 1, audio::playback_history.end());
+		}
+
+		if (static_cast<int>(audio::playback_history.size()) >= max_playback_history_entries)
+		{
+			audio::playback_history.erase(audio::playback_history.begin());
+			if (audio::playback_history_index > 0)
+			{
+				--audio::playback_history_index;
+			}
+		}
+
+		audio::playback_history.emplace_back(playlist_entry_index);
+		audio::playback_history_index = static_cast<int>(audio::playback_history.size()) - 1;
+	}
+
+	void sync_current_song_index_from_playlist_entry(const int playlist_entry_index)
+	{
+		const auto it = std::find(audio::playlist_order.begin(), audio::playlist_order.end(), playlist_entry_index);
+		if (it != audio::playlist_order.end())
+		{
+			audio::current_song_index = static_cast<int>(std::distance(audio::playlist_order.begin(), it));
+		}
+	}
+
+	void play_song_from_playlist_entry(const int playlist_entry_index, const bool record_history)
+	{
+		if (playlist_entry_index < 0 || playlist_entry_index >= static_cast<int>(audio::playlist_files.size()))
+		{
+			return;
+		}
+
+     if (record_history && audio::shuffle_enabled)
+		{
+			record_playback_history(playlist_entry_index);
+		}
+
+		switch (global::state)
+		{
+		case GameFlowState::LoadingFrontend:
+		case GameFlowState::InFrontend:
+		case GameFlowState::LoadingTrack:
+		case GameFlowState::LoadingRegion:
+		case GameFlowState::Racing:
+		default:
+			audio::play_file(audio::playlist_files[playlist_entry_index].first, 0);
+			break;
+		}
+	}
+
+    void play_song_from_playlist_order(const int song_index, const bool record_history = true)
+	{
+		if (song_index < 0 || song_index >= static_cast<int>(audio::playlist_order.size()))
+		{
+			return;
+		}
+
+		int playlist_entry_index = audio::playlist_order[song_index];
+
+		if (playlist_entry_index > static_cast<int>(audio::playlist_files.size()) - 1)
+		{
+			playlist_entry_index = static_cast<int>(audio::playlist_files.size()) - 1;
+		}
+
+		play_song_from_playlist_entry(playlist_entry_index, record_history);
+	}
+
+	bool ensure_playlist_order_for_current_context(const int reset_index)
+	{
+		const auto playlist_context = static_cast<std::int32_t>(get_playlist_context());
+		if (audio::playlist_order.empty() || audio::playlist_context != playlist_context)
+		{
+         if (audio::playlist_context != playlist_context)
+			{
+				clear_playback_history();
+			}
+
+			audio::create_playlist_order();
+			audio::current_song_index = reset_index;
+		}
+
+		return !audio::playlist_order.empty();
+	}
+
+	void move_current_song_index(const int delta)
+	{
+		const int last_song_index = static_cast<int>(audio::playlist_order.size()) - 1;
+		const int next_song_index = audio::current_song_index + delta;
+
+		if (next_song_index > last_song_index)
+		{
+			if (!audio::repeat_enabled)
+			{
+				audio::playlist_ended = true;
+				audio::current_song_index = static_cast<int>(audio::playlist_order.size());
+				return;
+			}
+
+			audio::create_playlist_order();
+			audio::current_song_index = 0;
+			return;
+		}
+
+		if (next_song_index < 0)
+		{
+			audio::current_song_index = audio::repeat_enabled ? last_song_index : 0;
+			return;
+		}
+
+		audio::current_song_index = next_song_index;
+	}
+
+	bool try_play_song_from_history(const int history_index)
+	{
+		if (history_index < 0 || history_index >= static_cast<int>(audio::playback_history.size()))
+		{
+			return false;
+		}
+
+		const int playlist_entry_index = audio::playback_history[history_index];
+		sync_current_song_index_from_playlist_entry(playlist_entry_index);
+		play_song_from_playlist_entry(playlist_entry_index, false);
+		return true;
+	}
+
+	void play_relative_song(const int delta)
+	{
+		const int reset_index = delta > 0 ? -1 : static_cast<int>(audio::playlist_order.size());
+		if (!ensure_playlist_order_for_current_context(reset_index))
+		{
+			return;
+		}
+
+		if (audio::chan[0] != 0)
+		{
+			audio::stop(0);
+		}
+
+		if (audio::shuffle_enabled)
+		{
+			if (delta < 0 && audio::playback_history_index > 0)
+			{
+				--audio::playback_history_index;
+				if (try_play_song_from_history(audio::playback_history_index))
+				{
+					return;
+				}
+			}
+			else if (delta < 0 && audio::playback_history_index == 0)
+			{
+				if (try_play_song_from_history(audio::playback_history_index))
+				{
+					return;
+				}
+			}
+
+			if (delta > 0 && audio::playback_history_index >= 0 && audio::playback_history_index < static_cast<int>(audio::playback_history.size()) - 1)
+			{
+				++audio::playback_history_index;
+				if (try_play_song_from_history(audio::playback_history_index))
+				{
+					return;
+				}
+			}
+		}
+
+		move_current_song_index(delta);
+
+		if (audio::current_song_index < 0 || audio::current_song_index >= static_cast<int>(audio::playlist_order.size()))
+		{
+			return;
+		}
+
+		play_song_from_playlist_order(audio::current_song_index);
 	}
 }
 
@@ -209,6 +397,11 @@ void audio::create_playlist_order()
 	audio::playlist_order.clear();
 	audio::playlist_ended = false;
 
+	if (!audio::shuffle_enabled)
+	{
+		clear_playback_history();
+	}
+
 	if (audio::playlist_files.empty())
 	{
 		return;
@@ -261,55 +454,12 @@ void audio::enumerate_playlist()
 
 void audio::play_next_song()
 {
-    const auto playlist_context = static_cast<std::int32_t>(get_playlist_context());
-	if (audio::playlist_order.empty() || audio::playlist_context != playlist_context)
-	{
-		audio::create_playlist_order();
-		audio::current_song_index = -1;
-	}
+    play_relative_song(1);
+}
 
-	audio::current_song_index++;
-
- if (audio::playlist_order.empty())
-	{
-		return;
-	}
-
-	//If our playlist has ended
-	if (audio::current_song_index > audio::playlist_order.size() - 1)
-	{
-       if (!audio::repeat_enabled)
-		{
-			audio::playlist_ended = true;
-			audio::current_song_index = static_cast<int>(audio::playlist_order.size());
-			return;
-		}
-
-		audio::create_playlist_order();
-		audio::current_song_index = 0;
-	}
-
-	if (audio::playlist_order.size() > 0)
-	{
-		int next = audio::playlist_order[audio::current_song_index];
-
-		if (next > audio::playlist_files.size() - 1)
-		{
-			next = audio::playlist_files.size() - 1;
-		}
-
-        switch (global::state)
-		{
-      case GameFlowState::LoadingFrontend:
-		case GameFlowState::InFrontend:
-		case GameFlowState::LoadingTrack:
-		case GameFlowState::LoadingRegion:
-		case GameFlowState::Racing:
-		default:
-			audio::play_file(audio::playlist_files[next].first, 0);
-			break;
-		}
-	}
+void audio::play_previous_song()
+{
+    play_relative_song(-1);
 }
 
 void audio::set_volume(std::int32_t vol_in)
@@ -331,7 +481,9 @@ std::string audio::playlist_name = "Music";
 std::string audio::playlist_dir = "Music";
 std::vector<std::pair<std::string, std::string>> audio::playlist_files;
 std::vector<int> audio::playlist_order;
+std::vector<int> audio::playback_history;
 int audio::current_song_index = 0;
+int audio::playback_history_index = -1;
 std::int32_t audio::playlist_context = -1;
 std::initializer_list<std::string> audio::supported_files { "wav", "mp1", "mp2", "mp3", "ogg", "aif"};
 std::vector<const char*> audio::mute_detection;
