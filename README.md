@@ -111,6 +111,8 @@ Default configuration:
 [core]
 playlist = "Music"
 volume = "100"
+frontend_volume = "100"
+ingame_volume = "100"
 version = "..."
 
 [config]
@@ -132,7 +134,9 @@ song3.mp3 = IG
 ### Core Settings
 
 - `playlist`: Folder name used as the music library. Default is `Music`.
-- `volume`: Playback volume from `0` to `100`.
+- `volume`: Legacy fallback volume used when a specific context volume is unavailable.
+- `frontend_volume`: Frontend playback volume from `0` to `100`.
+- `ingame_volume`: In-game playback volume from `0` to `100`.
 - `version`: Internal version marker used by the mod.
 
 ### Config Settings
@@ -222,7 +226,6 @@ The following features are planned for future releases:
 - **Pause/Resume Control** - Persistent pause state that maintains playback position
 - **Multiple Playlists** - Switch between different music folders dynamically within the game
 - **Advanced Context Filters** - More granular playback rules beyond FE/IG (events, game modes, etc.)
-- **Context-Based Volume Control** - Different volume levels for frontend and in-game music
 - **Lip-Sync Synchronization** - Adjust audio synchronization for cutscenes and cinematics
 - **Volume Normalization** - Automatic level equalization across all tracks
 - **Real-Time Audio Format Conversion** - Support for additional audio formats through runtime conversion

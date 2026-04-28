@@ -9,6 +9,7 @@ namespace bass_api
         using get_version_fn = DWORD(WINAPI*)();
         using init_fn = BOOL(WINAPI*)(int, DWORD, DWORD, HWND, void*);
         using channel_is_active_fn = DWORD(WINAPI*)(DWORD);
+        using channel_set_attribute_fn = BOOL(WINAPI*)(DWORD, DWORD, float);
         using stream_free_fn = BOOL(WINAPI*)(DWORD);
         using start_fn = BOOL(WINAPI*)();
         using pause_fn = BOOL(WINAPI*)();
@@ -20,6 +21,7 @@ namespace bass_api
         get_version_fn get_version_ptr = nullptr;
         init_fn init_ptr = nullptr;
         channel_is_active_fn channel_is_active_ptr = nullptr;
+        channel_set_attribute_fn channel_set_attribute_ptr = nullptr;
         stream_free_fn stream_free_ptr = nullptr;
         start_fn start_ptr = nullptr;
         pause_fn pause_ptr = nullptr;
@@ -81,6 +83,7 @@ namespace bass_api
             get_version_ptr = nullptr;
             init_ptr = nullptr;
             channel_is_active_ptr = nullptr;
+            channel_set_attribute_ptr = nullptr;
             stream_free_ptr = nullptr;
             start_ptr = nullptr;
             pause_ptr = nullptr;
@@ -125,6 +128,7 @@ namespace bass_api
         if (!resolve(get_version_ptr, "BASS_GetVersion") ||
             !resolve(init_ptr, "BASS_Init") ||
             !resolve(channel_is_active_ptr, "BASS_ChannelIsActive") ||
+            !resolve(channel_set_attribute_ptr, "BASS_ChannelSetAttribute") ||
             !resolve(stream_free_ptr, "BASS_StreamFree") ||
             !resolve(start_ptr, "BASS_Start") ||
             !resolve(pause_ptr, "BASS_Pause") ||
@@ -184,6 +188,11 @@ namespace bass_api
         return channel_is_active_ptr(channel);
     }
 
+    bool channel_set_attribute(DWORD channel, DWORD attribute, float value)
+    {
+        return channel_set_attribute_ptr != nullptr && channel_set_attribute_ptr(channel, attribute, value) != FALSE;
+    }
+
     bool stream_free(DWORD channel)
     {
         return stream_free_ptr != nullptr && stream_free_ptr(channel) != FALSE;
@@ -202,6 +211,11 @@ namespace bass_api
     bool set_config(DWORD option, DWORD value)
     {
         return set_config_ptr != nullptr && set_config_ptr(option, value) != FALSE;
+    }
+
+    bool set_channel_volume(DWORD channel, float volume)
+    {
+        return channel_set_attribute(channel, attrib_vol, volume);
     }
 
     bool set_stream_volume_config(std::int32_t volume)

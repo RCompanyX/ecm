@@ -23,6 +23,8 @@ public:
 	static void shuffle();
    static const char* current_playlist_context();
 	static int current_playlist_track_count();
+   static std::int32_t current_context_volume();
+	static void apply_current_context_volume();
 	static void play_next_song();
     static void play_previous_song();
 	static void pause();
@@ -47,6 +49,9 @@ public:
 	static std::int32_t chan[2];
 
 	static std::int32_t volume;
+  static std::int32_t frontend_volume;
+	static std::int32_t ingame_volume;
+	static std::int32_t applied_volume;
 	static bool stop_music_on_loading_screens;
 	static bool shuffle_enabled;
 	static bool repeat_enabled;

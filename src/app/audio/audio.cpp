@@ -16,6 +16,11 @@ namespace
 {
     constexpr int max_playback_history_entries = 50;
 
+	std::int32_t clamp_volume(const std::int32_t volume)
+	{
+		return std::clamp(volume, 0, 100);
+	}
+
 	enum class playlist_context_t : std::int32_t
 	{
 		all,
@@ -290,7 +295,6 @@ void audio::init()
 		return;
 	}
 
-	audio::set_volume(audio::volume);
   audio::create_playlist_order();
 	audio::pause();
 	audio::update();
@@ -314,6 +318,8 @@ void audio::update()
 
 		return;
 	}
+
+	audio::apply_current_context_volume();
 
  std::uint32_t state = bass_api::channel_is_active(audio::chan[0]);
 
@@ -352,6 +358,7 @@ void audio::stop(int channel)
 
   bass_api::stream_free(audio::chan[channel]);
 	audio::chan[channel] = 0;
+	audio::applied_volume = -1;
 
 	audio::currently_playing.title = "N/A";
 }
@@ -390,6 +397,40 @@ int audio::current_playlist_track_count()
 	}
 
 	return track_count;
+}
+
+std::int32_t audio::current_context_volume()
+{
+	switch (get_playlist_context())
+	{
+	case playlist_context_t::frontend:
+		return clamp_volume(audio::frontend_volume);
+
+	case playlist_context_t::ingame:
+		return clamp_volume(audio::ingame_volume);
+
+	default:
+		return clamp_volume(audio::volume);
+	}
+}
+
+void audio::apply_current_context_volume()
+{
+	if (audio::chan[0] == 0)
+	{
+		return;
+	}
+
+	const std::int32_t volume = audio::current_context_volume();
+	if (audio::applied_volume == volume)
+	{
+		return;
+	}
+
+	if (bass_api::set_channel_volume(audio::chan[0], static_cast<float>(volume) / 100.0f))
+	{
+		audio::applied_volume = volume;
+	}
 }
 
 void audio::create_playlist_order()
@@ -464,7 +505,11 @@ void audio::play_previous_song()
 
 void audio::set_volume(std::int32_t vol_in)
 {
-  bass_api::set_stream_volume_config(vol_in);
+   const std::int32_t volume = clamp_volume(vol_in);
+	if (audio::chan[0] != 0 && bass_api::set_channel_volume(audio::chan[0], static_cast<float>(volume) / 100.0f))
+	{
+		audio::applied_volume = volume;
+	}
 }
 
 bool audio::paused = false;
@@ -472,6 +517,9 @@ bool audio::playing = false;
 std::int32_t audio::req;
 std::int32_t audio::chan[2];
 std::int32_t audio::volume = 50;
+std::int32_t audio::frontend_volume = 50;
+std::int32_t audio::ingame_volume = 50;
+std::int32_t audio::applied_volume = -1;
 bool audio::stop_music_on_loading_screens = true;
 bool audio::shuffle_enabled = true;
 bool audio::repeat_enabled = true;

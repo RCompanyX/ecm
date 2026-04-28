@@ -33,4 +33,4 @@
 
 #define __fartcall __fastcall
 
-#define VERSION "v0.5.4-alpha"
+#define VERSION "v0.5.5-alpha"

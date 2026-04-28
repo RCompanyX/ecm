@@ -9,6 +9,7 @@
 void play_file(const char* file, int channel)
 {
    audio::chan[channel] = static_cast<std::int32_t>(bass_api::stream_create_file(file));
+	audio::apply_current_context_volume();
 
   if (audio::chan[channel] != 0 && bass_api::channel_play(audio::chan[channel], false))
 	{

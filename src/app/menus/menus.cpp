@@ -104,17 +104,41 @@ void menus::actions()
 	if (ImGui::BeginMenu("Actions"))
 	{
 		ImGui::Text("Audio Controls");
-		ImGui::Text("Volume: ");
+        ImGui::PushItemWidth(120.0f);
 
-		ImGui::SameLine();
-		ImGui::PushItemWidth(50.0f);
-
-		if (ImGui::SliderInt("##Volume", &audio::volume, 0, 100))
+		auto save_volume_setting = [](const char* key, const int value)
 		{
-			audio::set_volume(audio::volume);
-			static ini_t* config = ini_load(settings::config_file.c_str());
-			ini_set(config, "core", "volume", std::to_string(audio::volume).c_str());
-			ini_save(config, settings::config_file.c_str());
+			if (ini_t* config = ini_load(settings::config_file.c_str()))
+			{
+				ini_set(config, "core", key, std::to_string(value).c_str());
+				ini_save(config, settings::config_file.c_str());
+				ini_free(config);
+			}
+		};
+
+		auto draw_volume_slider = [&](const char* label, std::int32_t& value, const char* config_key)
+		{
+			if (ImGui::SliderInt(label, &value, 0, 100))
+			{
+				audio::apply_current_context_volume();
+				save_volume_setting(config_key, value);
+			}
+		};
+
+		const std::string current_context = audio::current_playlist_context();
+		const bool is_frontend_context = current_context == "Frontend";
+		const bool is_ingame_context = current_context == "In-game";
+
+       if (is_ingame_context)
+		{
+			draw_volume_slider("Current Volume (In-game)", audio::ingame_volume, "ingame_volume");
+			draw_volume_slider("Frontend Volume", audio::frontend_volume, "frontend_volume");
+		}
+		else
+		{
+			const char* current_label = is_frontend_context ? "Current Volume (Frontend)" : "Frontend Volume";
+			draw_volume_slider(current_label, audio::frontend_volume, "frontend_volume");
+			draw_volume_slider("In-game Volume", audio::ingame_volume, "ingame_volume");
 		}
 
         if (ImGui::Button("Previous"))
@@ -168,6 +192,7 @@ void menus::actions()
 		ImGui::Text("Mode: %s", audio::shuffle_enabled ? "Random" : "Sequential");
      ImGui::Text("Repeat: %s", audio::repeat_enabled ? "All" : "Off");
 		ImGui::Text("Context: %s", audio::current_playlist_context());
+		ImGui::Text("Active Volume: %d", audio::current_context_volume());
 		ImGui::Text("Tracks: %d", audio::current_playlist_track_count());
 
 		ImGui::EndMenu();
