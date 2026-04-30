@@ -13,10 +13,11 @@ This fork is currently focused on **Need for Speed: Underground 2 (NFSU2)**.
 ## Quick Start
 
 1. Install ECM-R with your preferred mod loader or mod manager.
-2. Place `ecm-r.x86.asi`, `ecm-r.x86.ini` (or let ECM-R create it), and `bass.dll` inside the target `scripts` folder.
-3. Create a `Music` folder next to those runtime files.
-4. Put your supported audio files inside `Music`.
-5. Launch the game and open the overlay with `F11`.
+2. Download the official `bass.dll` runtime from https://www.un4seen.com/.
+3. Place `ecm-r.x86.asi`, `ecm-r.x86.ini` (or let ECM-R create it), and `bass.dll` inside the target `scripts` folder.
+4. Create a `Music` folder next to those runtime files.
+5. Put your supported audio files inside `Music`.
+6. Launch the game and open the overlay with `F11`.
 
 ## Quick Links
 
@@ -117,11 +118,11 @@ ECM-R currently scans the playlist folder for these file types:
 
 - Creates `ecm-r.x86.ini` automatically on first launch
 - Saves runtime changes for shuffle, repeat, and volume settings back to the configuration file
-- Supports configurable playlist location, key bindings, and per-track routing rules
+- Supports configurable playlist location, key bindings, loading-screen music handling, and per-track routing rules
 
 ### Game Integration
 
-- Can stop custom music during loading screens and resume normal playback flow afterward
+- Can stop custom music during loading screens and resume normal playback flow afterward through the `stop_music_on_loading_screens` setting
 - Keeps the original game files untouched while replacing or muting game music through the mod runtime
 
 ## Controls
