@@ -81,7 +81,7 @@ ECM-R currently scans the playlist folder for these file types:
 - `F9`: Go back to the previous song by default
 - `F10`: Skip to the next song by default
 
-Both hotkeys can be changed in `ecm-r.x86.ini`.
+These hotkeys can be changed in `ecm-r.x86.ini`.
 
 ## Configuration
 
