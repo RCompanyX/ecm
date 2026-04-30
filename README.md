@@ -8,14 +8,31 @@
 ECM-R replaces or mutes the in-game music and plays audio files from a user playlist folder.
 It also includes an in-game overlay for basic playback control.
 
-Current behavior in this fork is focused on **NFSU2**.
+This fork is currently focused on **Need for Speed: Underground 2 (NFSU2)**.
+
+## Quick Start
+
+1. Install ECM-R with your preferred mod loader or mod manager.
+2. Download the official `bass.dll` runtime from https://www.un4seen.com/.
+3. Place `ecm-r.x86.asi`, `ecm-r.x86.ini` (or let ECM-R create it), and `bass.dll` inside the target `scripts` folder.
+4. Create a `Music` folder next to those runtime files.
+5. Put your supported audio files inside `Music`.
+6. Launch the game and open the overlay with `F11`.
+
+ECM-R supports `frontend_volume` and `ingame_volume` in addition to the legacy `volume` setting. Older configurations keep using `volume` as the fallback base when the context-specific values are missing.
+
+## Quick Links
+
+- [Building](BUILDING.md)
+- [Configuration Manual](CONFIGURATION.MD)
+- [Changelog](CHANGELOG.md)
 
 ## Fork Status
 
-This repository is maintained as a fork.
-If you are looking for the original ECM source, attribution chain, or upstream history, review the upstream repository and the included license file.
+This repository is maintained as a fork of the original ECM project by **BttrDrgn**.
+The current feature set and documentation are maintained around the NFSU2 runtime used by this fork.
 
-Original author of ECM: **BttrDrgn**.
+If you are looking for the original ECM source, attribution chain, or upstream history, review the upstream repository and the included license file.
 
 ## Requirements
 
@@ -28,185 +45,9 @@ Original author of ECM: **BttrDrgn**.
 
 Build instructions for generating the plugin are available in [BUILDING.md](BUILDING.md).
 
-## Installation
+## Runtime Layout
 
-### Option 1: Mr. Modman
-
-If you use [Mr. Modman](https://github.com/VelocityCL/mr.modman):
-
-1. Extract the files from the `scripts` folder into your game's global directory or pack directory.
-2. Make sure `ecm-r.x86.asi` is included.
-3. Download `bass.dll` from the official BASS website: https://www.un4seen.com/
-4. Place `bass.dll` in the same `scripts` folder as ECM-R.
-5. Make sure `ecm-r.x86.ini` is present or allow ECM-R to create it on first launch.
-6. Create a folder named `Music` next to the mod files.
-7. Put your songs inside that folder.
-
-### Option 2: ASI Loader
-
-If your game already uses an ASI loader such as `dinput8.dll`:
-
-1. Extract the release files into the game directory.
-2. Make sure `ecm-r.x86.asi` is present.
-3. Download `bass.dll` from the official BASS website: https://www.un4seen.com/
-4. Place `bass.dll` in the same `scripts` folder as ECM-R.
-5. Make sure `ecm-r.x86.ini` is present or allow ECM-R to create it on first launch.
-6. Create a `Music` folder in the expected mod location.
-7. Put your songs inside that folder.
-
-## Supported Audio Formats
-
-ECM-R currently scans the playlist folder for these file types:
-
-- `.wav`
-- `.mp1`
-- `.mp2`
-- `.mp3`
-- `.ogg`
-- `.aif`
-
-## How It Works
-
-- ECM-R loads music from the configured playlist folder.
-- The game's own music volume is muted by the mod.
-- Songs are shuffled automatically.
-- When a track ends, the next one is played.
-- Songs can be tagged for frontend-only or in-game-only playback through the configuration file.
-- Music can be stopped automatically during loading screens to better match the game's original behavior.
-- Shuffle and repeat playback behavior can be changed from the overlay or configuration file.
-
-If a filename follows the format `Artist - Title.ext`, the overlay chyron uses that information when possible.
-
-## Controls
-
-- `F11`: Toggle the in-game overlay by default
-- `F9`: Go back to the previous song by default
-- `F10`: Skip to the next song by default
-
-Both hotkeys can be changed in `ecm-r.x86.ini`.
-
-## Overlay
-
-The overlay provides:
-
-- An **Actions** menu
-  - Volume slider
-  - Previous button
-  - Skip button
-  - Shuffle toggle
-  - Repeat toggle
-- A **Playlist** menu
-  - Displays the discovered songs
-- A status line showing the current song and playlist name
-
-## Configuration
-
-ECM-R creates a configuration file automatically on first launch:
-
-- `ecm-r.x86.ini`
-
-Default configuration:
-
-```ini
-[core]
-playlist = "Music"
-volume = "100"
-frontend_volume = "100"
-ingame_volume = "100"
-version = "..."
-
-[config]
-shuffle_enabled = true
-repeat_enabled = true
-stop_music_on_loading_screens = true
-
-[keys]
-toggle_overlay = F11
-previous_track = F9
-skip_track = F10
-
-[trax]
-song1.mp3 = ALL
-song2.mp3 = FE
-song3.mp3 = IG
-```
-
-### Core Settings
-
-- `playlist`: Folder name used as the music library. Default is `Music`.
-- `volume`: Legacy fallback volume used when a specific context volume is unavailable.
-- `frontend_volume`: Frontend playback volume from `0` to `100`.
-- `ingame_volume`: In-game playback volume from `0` to `100`.
-- `version`: Internal version marker used by the mod.
-
-### Config Settings
-
-- `shuffle_enabled`: Controls whether valid tracks are shuffled before playback. Default is `true`.
-- `repeat_enabled`: Controls whether playback restarts from the beginning of the valid track list after the last song finishes. Default is `true`.
-- `stop_music_on_loading_screens`: Controls whether ECM-R stops the current song during loading screens before starting another song after loading. Default is `true`.
-
-Accepted values include `true`, `false`, `1`, `0`, `yes`, `no`, `on`, and `off`.
-
-If `shuffle_enabled` is set to `false`, ECM-R plays valid tracks in their discovered order.
-If `repeat_enabled` is set to `false`, playback stops after the last valid track in the current context.
-
-### Key Bindings
-
-- `toggle_overlay`: Key used to show or hide the overlay.
-- `previous_track`: Key used to go back to the previous song.
-- `skip_track`: Key used to jump to the next song.
-
-Supported values include:
-
-- Function keys such as `F1` to `F24`
-- Letters such as `A` to `Z`
-- Digits such as `0` to `9`
-- Named keys such as `Space`, `Tab`, `Enter`, `Escape`, `Insert`, `Delete`, `Home`, `End`, `PageUp`, `PageDown`, `Up`, `Down`, `Left`, and `Right`
-
-### Track Routing
-
-Each discovered song is added under `[trax]`.
-
-Allowed values:
-
-- `ALL`: Play everywhere
-- `FE`: Frontend only
-- `IG`: In-game only
-
-This lets you separate menu music from racing music.
-
-## Loading Screen Behavior
-
-By default, ECM-R stops custom music during loading screens and starts another song when normal frontend or in-game playback resumes.
-
-This behavior is controlled by:
-
-```ini
-[config]
-stop_music_on_loading_screens = true
-```
-
-Set it to `false` if you want custom music to continue following the older behavior.
-
-## Playback Modes
-
-ECM-R exposes shuffle and repeat controls in the overlay and stores their values in `ecm-r.x86.ini`.
-
-```ini
-[config]
-shuffle_enabled = true
-repeat_enabled = true
-```
-
-- Set `shuffle_enabled = false` for sequential playback.
-- Set `repeat_enabled = false` to stop playback after the last valid track.
-- Changes made from the overlay are saved back to the configuration file automatically.
-
-## Playlist Folder
-
-By default, ECM-R looks for a folder named `Music` relative to the mod location.
-
-Example:
+Typical deployment for this fork places the runtime files together inside the game's `scripts` folder:
 
 ```text
 Game Folder/
@@ -219,24 +60,101 @@ Game Folder/
       Artist - Song 02.ogg
 ```
 
-## Planned Features
+ECM-R loads the official BASS runtime dynamically, so `bass.dll` must be present next to the ECM-R runtime files.
 
-The following features are planned for future releases:
+## Installation
+
+Before choosing an installation method:
+
+1. Download the official `bass.dll` runtime from https://www.un4seen.com/
+2. Prepare the ECM-R runtime files for your target `scripts` folder:
+   - `ecm-r.x86.asi`
+   - `ecm-r.x86.ini` (optional on first launch)
+   - `bass.dll`
+3. Create a `Music` folder next to those files and place your songs inside it.
+
+### Option 1: Mr. Modman
+
+If you use [Mr. Modman](https://github.com/VelocityCL/mr.modman):
+
+1. Extract the release `scripts` contents into your game's global directory or pack directory.
+2. Make sure the final deployed `scripts` folder contains `ecm-r.x86.asi`, `ecm-r.x86.ini` (or allow it to be created), and `bass.dll`.
+3. Make sure the `Music` folder is placed in that same runtime location.
+
+### Option 2: ASI Loader
+
+If your game already uses an ASI loader such as `dinput8.dll`:
+
+1. Extract the release files into the game directory used by your loader.
+2. Make sure the loader's `scripts` folder contains `ecm-r.x86.asi`, `ecm-r.x86.ini` (or allow it to be created), and `bass.dll`.
+3. Create a `Music` folder in that same runtime location and place your songs there.
+
+## Supported Audio Formats
+
+ECM-R currently scans the playlist folder for these file types:
+
+- `.wav`
+- `.mp1`
+- `.mp2`
+- `.mp3`
+- `.ogg`
+- `.aif`
+
+## Implemented Functionality
+
+### Playback
+
+- Loads custom music from a configurable playlist folder without replacing the original game files
+- Supports shuffle and repeat playback modes with persistent configuration
+- Supports previous and next track navigation from both hotkeys and the overlay
+- Supports separate frontend and in-game volume levels, with legacy `volume` compatibility for older configurations
+- Plays valid tracks in discovered order when shuffle is disabled
+- Can stop playback after the last valid track when repeat is disabled
+- Supports per-track routing for frontend-only, in-game-only, or shared playback
+
+### Overlay and Controls
+
+- Displays an in-game overlay with playback controls and playlist browsing
+- Allows runtime toggles for shuffle and repeat directly from the overlay
+- Includes both Previous and Next track controls in the overlay and supports configurable hotkeys for opening the overlay and changing tracks
+- Uses real playback history for previous-track navigation while shuffle is enabled
+- Updates the overlay chyron from filenames when track metadata follows the expected naming format
+
+### Configuration and Persistence
+
+- Creates `ecm-r.x86.ini` automatically on first launch
+- Saves runtime changes for shuffle, repeat, and volume settings back to the configuration file
+- Migrates older configurations by using legacy `volume` as the fallback source for context-specific volume settings
+- Supports configurable playlist location, key bindings, loading-screen music handling, and per-track routing rules
+
+### Game Integration
+
+- Can stop custom music during loading screens and resume normal playback flow afterward through the `stop_music_on_loading_screens` setting, which defaults to `true`
+- Allows custom music to continue through loading screens when `stop_music_on_loading_screens` is set to `false`
+- Keeps the original game files untouched while replacing or muting game music through the mod runtime
+
+## Configuration
+
+The full configuration reference is available in [CONFIGURATION.MD](CONFIGURATION.MD).
+
+Key supported settings include `frontend_volume`, `ingame_volume`, `shuffle_enabled`, `repeat_enabled`, `stop_music_on_loading_screens`, and `previous_track`.
+
+## Roadmap
+
+The current roadmap includes:
 
 - **Pause/Resume Control** - Persistent pause state that maintains playback position
 - **Multiple Playlists** - Switch between different music folders dynamically within the game
 - **Advanced Context Filters** - More granular playback rules beyond FE/IG (events, game modes, etc.)
-- **Lip-Sync Synchronization** - Adjust audio synchronization for cutscenes and cinematics
 - **Volume Normalization** - Automatic level equalization across all tracks
-- **Real-Time Audio Format Conversion** - Support for additional audio formats through runtime conversion
+- **Lip-Sync Synchronization** - Adjust audio synchronization for cutscenes and cinematics
 
 ## Notes
 
 - If `bass.dll` is missing or the wrong version is loaded, audio playback will fail.
-- This project loads the official BASS runtime dynamically and requires `bass.dll` at runtime.
-- Download `bass.dll` from the official BASS website: https://www.un4seen.com/
-- Place `bass.dll` in the same `scripts` folder as ECM-R runtime files.
+- `bass.dll` must be the official BASS runtime placed next to the ECM-R runtime files.
 - The current runtime integration has been tested with BASS `v2.4.18.11`.
+- Avoid using unofficial, modified, or repackaged `bass.dll` builds.
 - BASS is a third-party library and remains subject to the official BASS license terms.
 - ECM-R does not bundle or redistribute `bass.dll`; users must obtain the official runtime themselves.
 - ECM-R is maintained as a non-commercial fork project.
