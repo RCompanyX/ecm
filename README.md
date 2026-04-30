@@ -65,17 +65,15 @@ ECM-R currently scans the playlist folder for these file types:
 - `.ogg`
 - `.aif`
 
-## How It Works
+## Implemented Functionality
 
-- ECM-R loads music from the configured playlist folder.
-- The game's own music volume is muted by the mod.
-- Songs are shuffled automatically.
-- When a track ends, the next one is played.
-- Songs can be tagged for frontend-only or in-game-only playback through the configuration file.
-- Music can be stopped automatically during loading screens to better match the game's original behavior.
-- Shuffle and repeat playback behavior can be changed from the overlay or configuration file.
-
-If a filename follows the format `Artist - Title.ext`, the overlay chyron uses that information when possible.
+- Loads custom music from a configurable playlist folder without replacing the original game files
+- Displays an in-game overlay with playback controls and playlist browsing
+- Supports shuffle and repeat playback modes with persistent configuration
+- Supports separate frontend and in-game volume levels
+- Supports per-track routing for frontend-only, in-game-only, or shared playback
+- Can stop custom music during loading screens and resume normal playback flow afterward
+- Allows configurable hotkeys for opening the overlay and changing tracks
 
 ## Controls
 
@@ -85,139 +83,9 @@ If a filename follows the format `Artist - Title.ext`, the overlay chyron uses t
 
 Both hotkeys can be changed in `ecm-r.x86.ini`.
 
-## Overlay
-
-The overlay provides:
-
-- An **Actions** menu
-  - Volume slider
-  - Previous button
-  - Skip button
-  - Shuffle toggle
-  - Repeat toggle
-- A **Playlist** menu
-  - Displays the discovered songs
-- A status line showing the current song and playlist name
-
 ## Configuration
 
-ECM-R creates a configuration file automatically on first launch:
-
-- `ecm-r.x86.ini`
-
-Default configuration:
-
-```ini
-[core]
-playlist = "Music"
-volume = "100"
-frontend_volume = "100"
-ingame_volume = "100"
-version = "..."
-
-[config]
-shuffle_enabled = true
-repeat_enabled = true
-stop_music_on_loading_screens = true
-
-[keys]
-toggle_overlay = F11
-previous_track = F9
-skip_track = F10
-
-[trax]
-song1.mp3 = ALL
-song2.mp3 = FE
-song3.mp3 = IG
-```
-
-### Core Settings
-
-- `playlist`: Folder name used as the music library. Default is `Music`.
-- `volume`: Legacy fallback volume used when a specific context volume is unavailable.
-- `frontend_volume`: Frontend playback volume from `0` to `100`.
-- `ingame_volume`: In-game playback volume from `0` to `100`.
-- `version`: Internal version marker used by the mod.
-
-### Config Settings
-
-- `shuffle_enabled`: Controls whether valid tracks are shuffled before playback. Default is `true`.
-- `repeat_enabled`: Controls whether playback restarts from the beginning of the valid track list after the last song finishes. Default is `true`.
-- `stop_music_on_loading_screens`: Controls whether ECM-R stops the current song during loading screens before starting another song after loading. Default is `true`.
-
-Accepted values include `true`, `false`, `1`, `0`, `yes`, `no`, `on`, and `off`.
-
-If `shuffle_enabled` is set to `false`, ECM-R plays valid tracks in their discovered order.
-If `repeat_enabled` is set to `false`, playback stops after the last valid track in the current context.
-
-### Key Bindings
-
-- `toggle_overlay`: Key used to show or hide the overlay.
-- `previous_track`: Key used to go back to the previous song.
-- `skip_track`: Key used to jump to the next song.
-
-Supported values include:
-
-- Function keys such as `F1` to `F24`
-- Letters such as `A` to `Z`
-- Digits such as `0` to `9`
-- Named keys such as `Space`, `Tab`, `Enter`, `Escape`, `Insert`, `Delete`, `Home`, `End`, `PageUp`, `PageDown`, `Up`, `Down`, `Left`, and `Right`
-
-### Track Routing
-
-Each discovered song is added under `[trax]`.
-
-Allowed values:
-
-- `ALL`: Play everywhere
-- `FE`: Frontend only
-- `IG`: In-game only
-
-This lets you separate menu music from racing music.
-
-## Loading Screen Behavior
-
-By default, ECM-R stops custom music during loading screens and starts another song when normal frontend or in-game playback resumes.
-
-This behavior is controlled by:
-
-```ini
-[config]
-stop_music_on_loading_screens = true
-```
-
-Set it to `false` if you want custom music to continue following the older behavior.
-
-## Playback Modes
-
-ECM-R exposes shuffle and repeat controls in the overlay and stores their values in `ecm-r.x86.ini`.
-
-```ini
-[config]
-shuffle_enabled = true
-repeat_enabled = true
-```
-
-- Set `shuffle_enabled = false` for sequential playback.
-- Set `repeat_enabled = false` to stop playback after the last valid track.
-- Changes made from the overlay are saved back to the configuration file automatically.
-
-## Playlist Folder
-
-By default, ECM-R looks for a folder named `Music` relative to the mod location.
-
-Example:
-
-```text
-Game Folder/
-  scripts/
-    ecm-r.x86.asi
-    ecm-r.x86.ini
-    bass.dll
-    Music/
-      Artist - Song 01.mp3
-      Artist - Song 02.ogg
-```
+The full configuration reference is available in [docs/configuration-manual.md](docs/configuration-manual.md).
 
 ## Planned Features
 
