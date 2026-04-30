@@ -19,6 +19,8 @@ This fork is currently focused on **Need for Speed: Underground 2 (NFSU2)**.
 5. Put your supported audio files inside `Music`.
 6. Launch the game and open the overlay with `F11`.
 
+ECM-R supports `frontend_volume` and `ingame_volume` in addition to the legacy `volume` setting. Older configurations keep using `volume` as the fallback base when the context-specific values are missing.
+
 ## Quick Links
 
 - [Building](BUILDING.md)
@@ -105,24 +107,30 @@ ECM-R currently scans the playlist folder for these file types:
 - Loads custom music from a configurable playlist folder without replacing the original game files
 - Supports shuffle and repeat playback modes with persistent configuration
 - Supports previous and next track navigation from both hotkeys and the overlay
-- Supports separate frontend and in-game volume levels
+- Supports separate frontend and in-game volume levels, with legacy `volume` compatibility for older configurations
+- Plays valid tracks in discovered order when shuffle is disabled
+- Can stop playback after the last valid track when repeat is disabled
 - Supports per-track routing for frontend-only, in-game-only, or shared playback
 
 ### Overlay and Controls
 
 - Displays an in-game overlay with playback controls and playlist browsing
-- Allows configurable hotkeys for opening the overlay and changing tracks
+- Allows runtime toggles for shuffle and repeat directly from the overlay
+- Includes both Previous and Next track controls in the overlay and supports configurable hotkeys for opening the overlay and changing tracks
+- Uses real playback history for previous-track navigation while shuffle is enabled
 - Updates the overlay chyron from filenames when track metadata follows the expected naming format
 
 ### Configuration and Persistence
 
 - Creates `ecm-r.x86.ini` automatically on first launch
 - Saves runtime changes for shuffle, repeat, and volume settings back to the configuration file
+- Migrates older configurations by using legacy `volume` as the fallback source for context-specific volume settings
 - Supports configurable playlist location, key bindings, loading-screen music handling, and per-track routing rules
 
 ### Game Integration
 
-- Can stop custom music during loading screens and resume normal playback flow afterward through the `stop_music_on_loading_screens` setting
+- Can stop custom music during loading screens and resume normal playback flow afterward through the `stop_music_on_loading_screens` setting, which defaults to `true`
+- Allows custom music to continue through loading screens when `stop_music_on_loading_screens` is set to `false`
 - Keeps the original game files untouched while replacing or muting game music through the mod runtime
 
 ## Controls
@@ -131,11 +139,13 @@ ECM-R currently scans the playlist folder for these file types:
 - `F9`: Go back to the previous song by default
 - `F10`: Skip to the next song by default
 
-These hotkeys can be changed in `ecm-r.x86.ini`.
+The Previous action is also available from the overlay. These hotkeys can be changed in `ecm-r.x86.ini`.
 
 ## Configuration
 
 The full configuration reference is available in [CONFIGURATION.MD](CONFIGURATION.MD).
+
+Key supported settings include `frontend_volume`, `ingame_volume`, `shuffle_enabled`, `repeat_enabled`, `stop_music_on_loading_screens`, and `previous_track`.
 
 ## Roadmap
 
@@ -152,6 +162,7 @@ The current roadmap includes:
 - If `bass.dll` is missing or the wrong version is loaded, audio playback will fail.
 - `bass.dll` must be the official BASS runtime placed next to the ECM-R runtime files.
 - The current runtime integration has been tested with BASS `v2.4.18.11`.
+- Avoid using unofficial, modified, or repackaged `bass.dll` builds.
 - BASS is a third-party library and remains subject to the official BASS license terms.
 - ECM-R does not bundle or redistribute `bass.dll`; users must obtain the official runtime themselves.
 - ECM-R is maintained as a non-commercial fork project.
