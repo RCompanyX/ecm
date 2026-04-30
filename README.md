@@ -108,6 +108,7 @@ ECM-R currently scans the playlist folder for these file types:
 - Supports shuffle and repeat playback modes with persistent configuration
 - Supports previous and next track navigation from both hotkeys and the overlay
 - Supports separate frontend and in-game volume levels, with legacy `volume` compatibility for older configurations
+- Supports optional per-track volume normalization using ReplayGain-style metadata first and cached loudness analysis as a fallback
 - Plays valid tracks in discovered order when shuffle is disabled
 - Can stop playback after the last valid track when repeat is disabled
 - Supports per-track routing for frontend-only, in-game-only, or shared playback
@@ -123,7 +124,7 @@ ECM-R currently scans the playlist folder for these file types:
 ### Configuration and Persistence
 
 - Creates `ecm-r.x86.ini` automatically on first launch
-- Saves runtime changes for shuffle, repeat, and volume settings back to the configuration file
+- Saves runtime changes for shuffle, repeat, volume, and normalization settings back to the configuration file
 - Migrates older configurations by using legacy `volume` as the fallback source for context-specific volume settings
 - Supports configurable playlist location, key bindings, loading-screen music handling, and per-track routing rules
 
@@ -137,7 +138,7 @@ ECM-R currently scans the playlist folder for these file types:
 
 The full configuration reference is available in [CONFIGURATION.MD](CONFIGURATION.MD).
 
-Key supported settings include `frontend_volume`, `ingame_volume`, `shuffle_enabled`, `repeat_enabled`, `stop_music_on_loading_screens`, and `previous_track`.
+Key supported settings include `frontend_volume`, `ingame_volume`, `shuffle_enabled`, `repeat_enabled`, `stop_music_on_loading_screens`, `volume_normalization_enabled`, and `previous_track`.
 
 ## Roadmap
 
@@ -146,7 +147,6 @@ The current roadmap includes:
 - **Pause/Resume Control** - Persistent pause state that maintains playback position
 - **Multiple Playlists** - Switch between different music folders dynamically within the game
 - **Advanced Context Filters** - More granular playback rules beyond FE/IG (events, game modes, etc.)
-- **Volume Normalization** - Automatic level equalization across all tracks
 - **Lip-Sync Synchronization** - Adjust audio synchronization for cutscenes and cinematics
 
 ## Notes

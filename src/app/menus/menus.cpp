@@ -116,6 +116,16 @@ void menus::actions()
 			}
 		};
 
+        auto save_config_toggle = [](const char* key, const bool value)
+        {
+            if (ini_t* config = ini_load(settings::config_file.c_str()))
+            {
+                ini_set(config, "config", key, value ? "true" : "false");
+                ini_save(config, settings::config_file.c_str());
+                ini_free(config);
+            }
+        };
+
 		auto draw_volume_slider = [&](const char* label, std::int32_t& value, const char* config_key)
 		{
 			if (ImGui::SliderInt(label, &value, 0, 100))
@@ -161,6 +171,14 @@ void menus::actions()
 			}
 		}
 
+        bool volume_normalization_enabled = audio::volume_normalization_enabled;
+        if (ImGui::Checkbox("Volume Normalization", &volume_normalization_enabled))
+        {
+            audio::volume_normalization_enabled = volume_normalization_enabled;
+            audio::refresh_current_track_normalization();
+            save_config_toggle("volume_normalization_enabled", audio::volume_normalization_enabled);
+        }
+
 		bool shuffle_enabled = audio::shuffle_enabled;
 		if (ImGui::Checkbox("Shuffle", &shuffle_enabled))
 		{
@@ -168,31 +186,22 @@ void menus::actions()
 			audio::create_playlist_order();
 			audio::current_song_index = -1;
 
-			if (ini_t* config = ini_load(settings::config_file.c_str()))
-			{
-				ini_set(config, "config", "shuffle_enabled", audio::shuffle_enabled ? "true" : "false");
-				ini_save(config, settings::config_file.c_str());
-				ini_free(config);
-			}
+            save_config_toggle("shuffle_enabled", audio::shuffle_enabled);
 		}
 
 		bool repeat_enabled = audio::repeat_enabled;
 		if (ImGui::Checkbox("Repeat", &repeat_enabled))
 		{
 			audio::repeat_enabled = repeat_enabled;
-
-			if (ini_t* config = ini_load(settings::config_file.c_str()))
-			{
-				ini_set(config, "config", "repeat_enabled", audio::repeat_enabled ? "true" : "false");
-				ini_save(config, settings::config_file.c_str());
-				ini_free(config);
-			}
+            save_config_toggle("repeat_enabled", audio::repeat_enabled);
 		}
 
 		ImGui::Text("Mode: %s", audio::shuffle_enabled ? "Random" : "Sequential");
      ImGui::Text("Repeat: %s", audio::repeat_enabled ? "All" : "Off");
 		ImGui::Text("Context: %s", audio::current_playlist_context());
 		ImGui::Text("Active Volume: %d", audio::current_context_volume());
+        ImGui::Text("Normalization: %s", audio::volume_normalization_enabled ? "On" : "Off");
+        ImGui::Text("Track Gain: %.0f%% (%s)", audio::current_track_normalization_gain * 100.0f, audio::current_track_normalization_source.c_str());
 		ImGui::Text("Tracks: %d", audio::current_playlist_track_count());
 
 		ImGui::EndMenu();

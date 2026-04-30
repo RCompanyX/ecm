@@ -23,10 +23,11 @@ public:
 	static void shuffle();
    static const char* current_playlist_context();
 	static int current_playlist_track_count();
-   static std::int32_t current_context_volume();
+	static std::int32_t current_context_volume();
 	static void apply_current_context_volume();
 	static void play_next_song();
     static void play_previous_song();
+    static void refresh_current_track_normalization();
 	static void pause();
 	static void play();
 
@@ -51,8 +52,11 @@ public:
 	static std::int32_t volume;
   static std::int32_t frontend_volume;
 	static std::int32_t ingame_volume;
-	static std::int32_t applied_volume;
+	static float applied_channel_volume;
+    static float current_track_normalization_gain;
+    static std::string current_track_normalization_source;
 	static bool stop_music_on_loading_screens;
+    static bool volume_normalization_enabled;
 	static bool shuffle_enabled;
 	static bool repeat_enabled;
 	static bool playlist_ended;

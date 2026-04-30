@@ -13,7 +13,13 @@ namespace bass_api
     inline constexpr DWORD attrib_vol = 2;
     inline constexpr DWORD sample_float = 0x100;
     inline constexpr DWORD stream_prescan = 0x20000;
+    inline constexpr DWORD stream_decode = 0x200000;
     inline constexpr DWORD config_gvol_stream = 5;
+    inline constexpr DWORD data_float = 0x40000000;
+    inline constexpr DWORD data_error = 0xFFFFFFFF;
+    inline constexpr DWORD tag_ogg = 2;
+    inline constexpr DWORD tag_ape = 6;
+    inline constexpr DWORD tag_id3v2 = 13;
 
     bool load();
     void unload();
@@ -29,6 +35,8 @@ namespace bass_api
     bool set_config(DWORD option, DWORD value);
     bool set_channel_volume(DWORD channel, float volume);
     bool set_stream_volume_config(std::int32_t volume);
-    stream_handle_t stream_create_file(const char* file);
+    const void* channel_get_tags(DWORD channel, DWORD tags);
+    DWORD channel_get_data(DWORD channel, void* buffer, DWORD length);
+    stream_handle_t stream_create_file(const char* file, DWORD flags = sample_float | stream_prescan);
     bool channel_play(DWORD channel, bool restart);
 }

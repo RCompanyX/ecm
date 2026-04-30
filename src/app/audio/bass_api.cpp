@@ -14,6 +14,8 @@ namespace bass_api
         using start_fn = BOOL(WINAPI*)();
         using pause_fn = BOOL(WINAPI*)();
         using set_config_fn = BOOL(WINAPI*)(DWORD, DWORD);
+        using channel_get_tags_fn = const void*(WINAPI*)(DWORD, DWORD);
+        using channel_get_data_fn = DWORD(WINAPI*)(DWORD, void*, DWORD);
         using stream_create_file_fn = DWORD(WINAPI*)(BOOL, const void*, unsigned long long, unsigned long long, DWORD);
         using channel_play_fn = BOOL(WINAPI*)(DWORD, BOOL);
 
@@ -26,6 +28,8 @@ namespace bass_api
         start_fn start_ptr = nullptr;
         pause_fn pause_ptr = nullptr;
         set_config_fn set_config_ptr = nullptr;
+        channel_get_tags_fn channel_get_tags_ptr = nullptr;
+        channel_get_data_fn channel_get_data_ptr = nullptr;
         stream_create_file_fn stream_create_file_ptr = nullptr;
         channel_play_fn channel_play_ptr = nullptr;
         std::string last_error_message;
@@ -88,6 +92,8 @@ namespace bass_api
             start_ptr = nullptr;
             pause_ptr = nullptr;
             set_config_ptr = nullptr;
+            channel_get_tags_ptr = nullptr;
+            channel_get_data_ptr = nullptr;
             stream_create_file_ptr = nullptr;
             channel_play_ptr = nullptr;
         }
@@ -133,6 +139,8 @@ namespace bass_api
             !resolve(start_ptr, "BASS_Start") ||
             !resolve(pause_ptr, "BASS_Pause") ||
             !resolve(set_config_ptr, "BASS_SetConfig") ||
+            !resolve(channel_get_tags_ptr, "BASS_ChannelGetTags") ||
+            !resolve(channel_get_data_ptr, "BASS_ChannelGetData") ||
             !resolve(stream_create_file_ptr, "BASS_StreamCreateFile") ||
             !resolve(channel_play_ptr, "BASS_ChannelPlay"))
         {
@@ -223,14 +231,34 @@ namespace bass_api
         return set_config(config_gvol_stream, static_cast<DWORD>(volume * 100));
     }
 
-    stream_handle_t stream_create_file(const char* file)
+    const void* channel_get_tags(DWORD channel, DWORD tags)
+    {
+        if (channel_get_tags_ptr == nullptr)
+        {
+            return nullptr;
+        }
+
+        return channel_get_tags_ptr(channel, tags);
+    }
+
+    DWORD channel_get_data(DWORD channel, void* buffer, DWORD length)
+    {
+        if (channel_get_data_ptr == nullptr)
+        {
+            return data_error;
+        }
+
+        return channel_get_data_ptr(channel, buffer, length);
+    }
+
+    stream_handle_t stream_create_file(const char* file, DWORD flags)
     {
         if (stream_create_file_ptr == nullptr)
         {
             return 0;
         }
 
-        return stream_create_file_ptr(FALSE, file, 0, 0, sample_float | stream_prescan);
+        return stream_create_file_ptr(FALSE, file, 0, 0, flags);
     }
 
     bool channel_play(DWORD channel, bool restart)

@@ -17,6 +17,7 @@ version = "..."
 [config]
 shuffle_enabled = true
 repeat_enabled = true
+volume_normalization_enabled = false
 stop_music_on_loading_screens = true
 
 [keys]
@@ -96,6 +97,13 @@ Game Folder/
 - Default value: `true`.
 - When set to `false`, custom music continues through loading screens.
 
+### `volume_normalization_enabled`
+
+- Enables optional per-track volume normalization.
+- Default value: `false`.
+- When enabled, ECM-R prefers ReplayGain-style metadata when present and falls back to cached loudness analysis for tracks without supported metadata.
+- Normalization is applied on top of the active frontend or in-game volume setting.
+
 ### Accepted boolean values
 
 The `[config]` section accepts these values:
@@ -153,5 +161,6 @@ Invalid or missing values fall back to `ALL`.
 ## Behavior Notes
 
 - Changes made from the overlay to shuffle, repeat, or volume settings are saved back to `ecm-r.x86.ini` automatically.
+- Loudness analysis results are cached in `ecm-r.volume-cache.txt` next to the runtime files so tracks do not need to be re-analyzed on every launch.
 - If a filename follows the format `Artist - Title.ext`, the overlay chyron uses that information when possible.
 - Supported playlist formats are `.wav`, `.mp1`, `.mp2`, `.mp3`, `.ogg`, and `.aif`.
