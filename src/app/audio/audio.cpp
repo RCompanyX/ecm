@@ -271,14 +271,26 @@ void audio::init()
 	switch (global::game)
 	{
 	case game_t::NFSU2:
+		audio::mute_detection.emplace_back("ig_playmovie.fng");
 		audio::mute_detection.emplace_back("ls_psamovie.fng");
 		audio::mute_detection.emplace_back("ls_thxmovie.fng");
 		audio::mute_detection.emplace_back("ls_ealogo.fng");
 		audio::mute_detection.emplace_back("ls_blankmovie.fng");
 		audio::mute_detection.emplace_back("ug_ls_introfmv.fng");
+		audio::mute_detection.emplace_back("ui_magazineback.fng");
+		audio::mute_detection.emplace_back("ui_magazinereward.fng");
+		audio::mute_detection.emplace_back("ui_magazineselect.fng");
+		audio::mute_detection.emplace_back("ui_magazineview.fng");
+		audio::mute_detection.emplace_back("ui_rewardssponsor.fng");
+		audio::mute_detection.emplace_back("ui_status_dvd.fng");
 		audio::mute_detection_keywords.emplace_back("comic");
+		audio::mute_detection_keywords.emplace_back("fmv");
+		audio::mute_detection_keywords.emplace_back("magazine");
+		audio::mute_detection_keywords.emplace_back("movie");
 		audio::mute_detection_keywords.emplace_back("zone_unlock");
 		audio::mute_detection_keywords.emplace_back("new_zone_unlocked");
+		audio::mute_detection_keywords.emplace_back("reward");
+		audio::mute_detection_keywords.emplace_back("sponsor");
 		break;
 	}
 
