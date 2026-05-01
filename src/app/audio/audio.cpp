@@ -288,7 +288,6 @@ void audio::init()
 		audio::mute_detection_keywords.emplace_back("magazine");
 		audio::mute_detection_keywords.emplace_back("movie");
 		audio::mute_detection_keywords.emplace_back("zone_unlock");
-		audio::mute_detection_keywords.emplace_back("new_zone_unlocked");
 		audio::mute_detection_keywords.emplace_back("reward");
 		audio::mute_detection_keywords.emplace_back("sponsor");
 		break;
