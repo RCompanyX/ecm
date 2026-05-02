@@ -34,6 +34,14 @@ The current feature set and documentation are maintained around the NFSU2 runtim
 
 If you are looking for the original ECM source, attribution chain, or upstream history, review the upstream repository and the included license file.
 
+## Credits and Support
+
+- **Original ECM project:** BttrDrgn
+- **Current ECM-R fork maintainer:** RCompanyX
+- **Bug reports, feature requests, and ideas:** [GitHub Issues](https://github.com/RCompanyX/ecm-R/issues)
+
+The in-game overlay also includes an **About** menu with the same fork attribution and support links.
+
 ## Requirements
 
 - Windows

@@ -16,5 +16,6 @@ private:
 
 	static void main_menu_bar();
 	static void actions();
+	static void about();
 	static void playlist();
 };
